@@ -217,17 +217,17 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <span class="cf-label">MARKET</span>
     <select class="cf-select" id="countryFilter" onchange="setCountry(this.value)">
       <option value="ALL">🌍 All Markets</option>
-      <option value="USD">🇺🇸 United States</option>
-      <option value="GBP">🇬🇧 United Kingdom</option>
-      <option value="CAD">🇨🇦 Canada</option>
-      <option value="CHF">🇨🇭 Switzerland</option>
-      <option value="SEK">🇸🇪 Sweden</option>
+      <option value="US">🇺🇸 United States</option>
+      <option value="GB">🇬🇧 United Kingdom</option>
+      <option value="DE">🇩🇪 Germany</option>
+      <option value="NL">🇳🇱 Netherlands</option>
+      <option value="CA">🇨🇦 Canada</option>
     </select>
   </div>
   <div class="h-meta">
     <span class="badge" id="filterBadge" style="display:none"></span>
-    <span class="badge">Data: Feb 2020 – Feb 2026</span>
-    <span class="badge live">● Feb 18, 2026</span>
+    <span class="badge">Data: Mar 2020 – Dec 2024</span>
+    <span class="badge live">● Dec 2024</span>
   </div>
 </header>
 
@@ -246,8 +246,8 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <div class="ndiv"></div>
   <div class="s-stat">
     <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--green)">TOTAL REVENUE</div>
-    <div class="sv" id="sb-rev">$46.4M</div>
-    <div style="font-size:11px;color:var(--muted)" id="sb-orders">742,634 orders</div>
+    <div class="sv" id="sb-rev">$30.2M</div>
+    <div style="font-size:11px;color:var(--muted)" id="sb-orders">520,344 orders</div>
   </div>
 </aside>
 
@@ -257,22 +257,22 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <section class="section" id="overview">
   <div class="s-eye">01 / Overview</div>
   <div class="s-title">Performance Snapshot <span id="country-tag" style="font-size:14px;font-weight:400;color:var(--muted)"></span></div>
-  <div class="s-sub" id="overview-sub">All-time key metrics across revenue, acquisition and engagement · Feb 2020 – Feb 2026</div>
+  <div class="s-sub" id="overview-sub">US, UK, Germany, Netherlands &amp; Canada · Fulfilled orders · Mar 2020 – Dec 2024</div>
   <div class="ins-row">
-    <span class="ins g">↑ $46.4M lifetime gross revenue</span>
-    <span class="ins b">68% returning customer rate</span>
-    <span class="ins a">↑ Subscription-first business model</span>
-    <span class="ins r">↓ CVR trending down in early 2026</span>
+    <span class="ins g">↑ $30.2M gross revenue · 5-market focus</span>
+    <span class="ins b">68.2% returning customer rate</span>
+    <span class="ins a">↑ 70% subscription order share</span>
+    <span class="ins r">↓ Returns &amp; discounts rising in 2024</span>
   </div>
   <div class="kpi-grid">
-    <div class="kpi fi"><div class="kl">Total Gross Revenue</div><div class="kv g" id="k-rev">$46.4M</div><div class="kt up" id="k-rev-t">↑ Peak Oct 2024 at $3.0M/mo</div><div class="kglow g"></div></div>
-    <div class="kpi fi"><div class="kl">Total Orders</div><div class="kv" id="k-ord">742,634</div><div class="kt up" id="k-ord-t">↑ 50%+ subscription orders</div><div class="kglow b"></div></div>
-    <div class="kpi fi"><div class="kl">New Customers</div><div class="kv b" id="k-new">237,037</div><div class="kt n" id="k-new-t">32% of all customers</div><div class="kglow b"></div></div>
-    <div class="kpi fi"><div class="kl">Returning Customers</div><div class="kv" id="k-ret">505,584</div><div class="kt up" id="k-ret-t">↑ 68% of customer base</div><div class="kglow g"></div></div>
-    <div class="kpi fi"><div class="kl">Avg Order Value</div><div class="kv" id="k-aov">$62.43</div><div class="kt up">↑ Store AOV $71 · Sub AOV $57</div><div class="kglow a"></div></div>
-    <div class="kpi fi"><div class="kl">Returning Customer Rate</div><div class="kv g" id="k-rr">68.0%</div><div class="kt up">↑ Strong retention signal</div><div class="kglow g"></div></div>
-    <div class="kpi fi"><div class="kl">Discount Rate</div><div class="kv" id="k-dr">3.9%</div><div class="kt a" id="k-dr-t">↑ Rising in 2024–2025</div><div class="kglow a"></div></div>
-    <div class="kpi fi"><div class="kl">Return Rate</div><div class="kv" id="k-rtr">3.8%</div><div class="kt dn" id="k-rtr-t">↓ Escalating — monitor</div><div class="kglow r"></div></div>
+    <div class="kpi fi"><div class="kl">Total Gross Revenue</div><div class="kv g" id="k-rev">$30.2M</div><div class="kt up" id="k-rev-t">↑ Peak Oct 2024 at $3.0M/mo</div><div class="kglow g"></div></div>
+    <div class="kpi fi"><div class="kl">Total Orders</div><div class="kv" id="k-ord">520,344</div><div class="kt up" id="k-ord-t">↑ 70% subscription order share</div><div class="kglow b"></div></div>
+    <div class="kpi fi"><div class="kl">New Customers</div><div class="kv b" id="k-new">165,213</div><div class="kt n" id="k-new-t">31.8% of all customers</div><div class="kglow b"></div></div>
+    <div class="kpi fi"><div class="kl">Returning Customers</div><div class="kv" id="k-ret">355,131</div><div class="kt up" id="k-ret-t">↑ 68.2% of customer base</div><div class="kglow g"></div></div>
+    <div class="kpi fi"><div class="kl">Avg Order Value</div><div class="kv" id="k-aov">$58.09</div><div class="kt up">↑ Store AOV $71 · Sub AOV $57</div><div class="kglow a"></div></div>
+    <div class="kpi fi"><div class="kl">Returning Customer Rate</div><div class="kv g" id="k-rr">68.2%</div><div class="kt up">↑ Strong retention signal</div><div class="kglow g"></div></div>
+    <div class="kpi fi"><div class="kl">Discount Rate</div><div class="kv" id="k-dr">3.6%</div><div class="kt a" id="k-dr-t">↑ Rising through 2024 · 3.6%</div><div class="kglow a"></div></div>
+    <div class="kpi fi"><div class="kl">Return Rate</div><div class="kv" id="k-rtr">0.9%</div><div class="kt n" id="k-rtr-t">↓ Very low at 0.9% · stable</div><div class="kglow r"></div></div>
   </div>
 </section>
 
@@ -280,12 +280,12 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <section class="section" id="country">
   <div class="s-eye">02 / Country</div>
   <div class="s-title">Country / Market Breakdown</div>
-  <div class="s-sub">Click a market card to filter the entire dashboard · Currency used as market proxy</div>
+  <div class="s-sub">Click a market card to filter the entire dashboard · Focus: US, UK, Germany, Netherlands, Canada</div>
   <div class="ins-row">
-    <span class="ins g">US = 94% of all orders</span>
-    <span class="ins b">EU markets growing since 2024</span>
-    <span class="ins a">CAD/CHF highest AOV ($100+)</span>
-    <span class="ins r">GBP highest return rate (9.9%)</span>
+    <span class="ins g">US = 98.4% of all orders · 5 markets</span>
+    <span class="ins b">UK highest retention rate (84.8%)</span>
+    <span class="ins a">DE &amp; NL highest AOV ($73–$77)</span>
+    <span class="ins r">CA highest AOV ($86.58) · small market</span>
   </div>
   <div class="ctry-grid" id="ctry-grid"></div>
 </section>
@@ -302,7 +302,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <span class="ins a">Returns & discounts rising proportionally</span>
   </div>
   <div class="card mb14">
-    <div class="card-h"><div><div class="card-title">Monthly Gross vs Net Sales</div><div class="card-sub" id="rev-chart-sub">Full history · Feb 2020 – Feb 2026</div></div></div>
+    <div class="card-h"><div><div class="card-title">Monthly Gross vs Net Sales</div><div class="card-sub" id="rev-chart-sub">Full history · Mar 2020 – Dec 2024 · 5 markets</div></div></div>
     <div style="height:260px;position:relative"><canvas id="revenueChart"></canvas></div>
     <div class="cleg"><div class="leg-i"><div class="leg-d" style="background:#00e5a0"></div>Gross Sales</div><div class="leg-i"><div class="leg-d" style="background:#3b9eff"></div>Net Sales</div></div>
   </div>
@@ -314,13 +314,13 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
     <div class="card">
       <div class="card-h"><div><div class="card-title">Revenue Quality Metrics</div><div class="card-sub">All-time totals</div></div></div>
-      <div class="sr"><span class="sn">Gross Sales</span><span class="sv" style="color:var(--green)">$46,389,138</span></div>
-      <div class="sr"><span class="sn">Net Sales</span><span class="sv">$43,315,446</span></div>
-      <div class="sr"><span class="sn">Total Discounts</span><span class="sv" style="color:var(--amber)">−$1,798,693</span></div>
-      <div class="sr"><span class="sn">Total Returns</span><span class="sv" style="color:var(--rose)">−$1,750,249</span></div>
-      <div class="sr"><span class="sn">Total Shipping Revenue</span><span class="sv">$3,073,130</span></div>
-      <div class="sr"><span class="sn">Discount Rate</span><span class="sv" style="color:var(--amber)">3.88%</span></div>
-      <div class="sr"><span class="sn">Return Rate</span><span class="sv" style="color:var(--rose)">3.77%</span></div>
+      <div class="sr"><span class="sn">Gross Sales</span><span class="sv" style="color:var(--green)">$30,224,386</span></div>
+      <div class="sr"><span class="sn">Net Sales</span><span class="sv">$28,865,029</span></div>
+      <div class="sr"><span class="sn">Total Discounts</span><span class="sv" style="color:var(--amber)">−$1,087,407</span></div>
+      <div class="sr"><span class="sn">Total Returns</span><span class="sv" style="color:var(--rose)">−$272,097</span></div>
+      <div class="sr"><span class="sn">Total Shipping Revenue</span><span class="sv">$2,153,534</span></div>
+      <div class="sr"><span class="sn">Discount Rate</span><span class="sv" style="color:var(--amber)">3.60%</span></div>
+      <div class="sr"><span class="sn">Return Rate</span><span class="sv" style="color:var(--rose)">0.90%</span></div>
     </div>
   </div>
 </section>
@@ -331,10 +331,10 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <div class="s-title">Orders & Customer Acquisition</div>
   <div class="s-sub">Monthly order volume, new vs returning split, and AOV trends</div>
   <div class="ins-row">
-    <span class="ins g">↑ Peak Oct 2024: 44,349 orders</span>
-    <span class="ins b">Returning 3–4× new customers consistently</span>
-    <span class="ins r">↓ Volume declining since peak</span>
-    <span class="ins a">AOV stable $57–$85 across channels</span>
+    <span class="ins g">↑ Peak Oct 2024: 43,008 orders</span>
+    <span class="ins b">Returning 2.1× new customers consistently</span>
+    <span class="ins r">↓ Seasonal dip at Dec 2024</span>
+    <span class="ins a">AOV $58 avg · DE/NL peak $73–$77</span>
   </div>
   <div class="card mb14">
     <div class="card-h"><div><div class="card-title">New vs Returning Customers Per Month</div><div class="card-sub">Jan 2023 – Feb 2026</div></div></div>
@@ -359,10 +359,10 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <div class="s-title">Subscription Analysis</div>
   <div class="s-sub">Growth of recurring revenue — subscription share of total orders climbing from 50% to 80%+</div>
   <div class="ins-row">
-    <span class="ins g">↑ Sub share now 80%+ of monthly mix</span>
-    <span class="ins b">84,366 first-time subscribers acquired</span>
-    <span class="ins a">65% churn from Order #1 → #2</span>
-    <span class="ins r">One-time orders shrinking month over month</span>
+    <span class="ins g">↑ Sub share 70% of all orders</span>
+    <span class="ins b">81,773 first-time subscribers acquired</span>
+    <span class="ins a">~65% churn from Order #1 → #2</span>
+    <span class="ins r">One-time orders declining as share</span>
   </div>
   <div class="card mb14">
     <div class="card-h"><div><div class="card-title">Subscription vs One-Time Orders Over Time</div><div class="card-sub">Monthly split · 2023–2026</div></div></div>
@@ -493,12 +493,12 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <section class="section" id="cohort">
   <div class="s-eye">08 / Cohort</div>
   <div class="s-title">Retention Cohort Analysis</div>
-  <div class="s-sub">Customer acquisition month × subscription order sequence · Jan 2023 – Dec 2025 · M+0 = first order, M+1 = 2nd subscription order placed, etc.</div>
+  <div class="s-sub">Customer acquisition month × subscription order sequence · Jan 2023 – Dec 2024 · M+0 = first order, M+1 = 2nd subscription order placed, etc.</div>
   <div class="ins-row">
     <span class="ins r">↓ ~65% churn from M+0 → M+1 across all cohorts</span>
     <span class="ins g">↑ 2024 cohorts: strongest M+0 revenue ($600K–$780K)</span>
     <span class="ins b">M+2 retention averages ~30% of M+0 order volume</span>
-    <span class="ins a">Recent months (2025-10+) show incomplete future data</span>
+    <span class="ins a">Late 2024 cohorts show partial future sequences</span>
   </div>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
     <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text)">Metric &amp; View</div>
@@ -560,27 +560,27 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <div class="s-title">Retention & Business Health</div>
   <div class="s-sub">Email list health, fulfillment, cancellations, and return/discount rate trends</div>
   <div class="ins-row">
-    <span class="ins g">↑ 97% fulfillment rate — strong ops</span>
-    <span class="ins r">36% of customers unsubscribed from email</span>
-    <span class="ins b">Only 1.9% cancellation rate</span>
-    <span class="ins a">Returns/discounts escalating in 2024–2025</span>
+    <span class="ins g">↑ 0.9% return rate — very clean data</span>
+    <span class="ins r">43% of customers unsubscribed from email</span>
+    <span class="ins b">100% fulfilled · cancellations excluded</span>
+    <span class="ins a">Discounts 3.6% · well controlled</span>
   </div>
   <div class="g3 mb14">
     <div class="card">
       <div class="card-h"><div><div class="card-title">Email List Health</div><div class="card-sub">Subscription status</div></div></div>
       <div style="height:160px;position:relative"><canvas id="emailChart"></canvas></div>
-      <div class="sr"><span class="sn">Subscribed</span><span class="sv" style="color:var(--green)">436,655</span></div>
-      <div class="sr"><span class="sn">Unsubscribed</span><span class="sv" style="color:var(--rose)">267,165</span></div>
-      <div class="sr"><span class="sn">Not Subscribed</span><span class="sv">38,170</span></div>
+      <div class="sr"><span class="sn">Subscribed</span><span class="sv" style="color:var(--green)">277,357</span></div>
+      <div class="sr"><span class="sn">Unsubscribed</span><span class="sv" style="color:var(--rose)">212,377</span></div>
+      <div class="sr"><span class="sn">Not Subscribed</span><span class="sv">30,191</span></div>
     </div>
     <div class="card">
       <div class="card-h"><div><div class="card-title">Fulfillment Status</div><div class="card-sub">Order fulfillment breakdown</div></div></div>
       <div style="height:160px;position:relative"><canvas id="fulfillChart"></canvas></div>
-      <div class="sr"><span class="sn">Fulfilled</span><span class="sv" style="color:var(--green)">720,161</span></div>
-      <div class="sr"><span class="sn">Unfulfilled</span><span class="sv" style="color:var(--rose)">20,900</span></div>
+      <div class="sr"><span class="sn">Fulfilled</span><span class="sv" style="color:var(--green)">520,344</span></div>
+      <div class="sr"><span class="sn">Unfulfilled</span><span class="sv" style="color:var(--muted)">0 (filtered out)</span></div>
     </div>
     <div class="card">
-      <div class="card-h"><div><div class="card-title">Cancellation Reasons</div><div class="card-sub">Of all 742,634 orders</div></div></div>
+      <div class="card-h"><div><div class="card-title">Sales Channel Mix</div><div class="card-sub">Net revenue by channel · 5 markets · 2020–2024</div></div></div>
       <div style="height:220px;position:relative"><canvas id="cancelChart"></canvas></div>
     </div>
   </div>
@@ -681,97 +681,82 @@ function lineOpts(yFmt='$',y2=false){
 
 // ─── ALL MONTHLY DATA ────────────────────────────────────────────────────────
 const MD=[
-  {m:'2020-03',g:6934,n:6600,o:85,nc:39,rc:46,d:271,r:64},
-  {m:'2020-04',g:21649,n:19643,o:429,nc:121,rc:308,d:1177,r:829},
-  {m:'2020-05',g:44512,n:42680,o:1022,nc:358,rc:664,d:1571,r:261},
-  {m:'2020-06',g:56675,n:54068,o:1651,nc:665,rc:986,d:1102,r:1505},
-  {m:'2020-07',g:127403,n:121818,o:3412,nc:1522,rc:1890,d:3330,r:2255},
-  {m:'2020-08',g:143981,n:135982,o:3435,nc:1568,rc:1867,d:4082,r:3917},
-  {m:'2020-09',g:113559,n:109060,o:3008,nc:1237,rc:1771,d:3467,r:1033},
-  {m:'2020-10',g:112738,n:107459,o:2813,nc:1079,rc:1734,d:2741,r:2538},
-  {m:'2020-11',g:71071,n:67553,o:1896,nc:871,rc:1025,d:2863,r:656},
-  {m:'2020-12',g:128127,n:120044,o:2905,nc:1496,rc:1409,d:5660,r:2423},
-  {m:'2021-01',g:95820,n:90527,o:2238,nc:1074,rc:1164,d:3902,r:1392},
-  {m:'2021-02',g:95530,n:89533,o:2138,nc:1143,rc:995,d:4283,r:1714},
-  {m:'2021-03',g:180833,n:170386,o:3843,nc:2114,rc:1729,d:6679,r:3768},
-  {m:'2021-04',g:169584,n:159829,o:3292,nc:1822,rc:1470,d:7674,r:2080},
-  {m:'2021-05',g:172694,n:161770,o:3604,nc:1765,rc:1839,d:7365,r:3558},
-  {m:'2021-06',g:267851,n:250112,o:5572,nc:2708,rc:2864,d:14307,r:3432},
-  {m:'2021-07',g:360055,n:334099,o:7090,nc:3649,rc:3441,d:19780,r:6177},
-  {m:'2021-08',g:193646,n:182797,o:4758,nc:2159,rc:2599,d:7990,r:2859},
-  {m:'2021-09',g:141644,n:127666,o:2658,nc:1028,rc:1630,d:5164,r:8813},
-  {m:'2021-10',g:84643,n:79883,o:1663,nc:765,rc:898,d:3610,r:1150},
-  {m:'2021-11',g:56690,n:52565,o:873,nc:327,rc:546,d:3641,r:484},
-  {m:'2021-12',g:83613,n:79014,o:1490,nc:585,rc:905,d:3882,r:716},
-  {m:'2022-01',g:170739,n:160694,o:3097,nc:1295,rc:1802,d:8000,r:2045},
-  {m:'2022-02',g:175979,n:164767,o:3770,nc:1740,rc:2030,d:7163,r:4049},
-  {m:'2022-03',g:125780,n:118672,o:2887,nc:1236,rc:1651,d:4583,r:2525},
-  {m:'2022-04',g:222336,n:206235,o:4449,nc:1866,rc:2583,d:9886,r:6215},
-  {m:'2022-05',g:187134,n:175665,o:4553,nc:1803,rc:2750,d:7407,r:4073},
-  {m:'2022-06',g:152205,n:141330,o:3466,nc:1538,rc:1928,d:5906,r:4969},
-  {m:'2022-07',g:155650,n:134024,o:3194,nc:1236,rc:1958,d:8697,r:12930},
-  {m:'2022-08',g:161115,n:151549,o:3920,nc:1203,rc:2717,d:4964,r:4614},
-  {m:'2022-09',g:143209,n:136073,o:3141,nc:1000,rc:2141,d:5207,r:1929},
-  {m:'2022-10',g:290530,n:275768,o:7252,nc:1634,rc:5618,d:10275,r:4487},
-  {m:'2022-11',g:376471,n:352727,o:7937,nc:2035,rc:5902,d:17061,r:6684},
-  {m:'2022-12',g:307156,n:291363,o:6108,nc:1803,rc:4305,d:11368,r:4424},
-  {m:'2023-01',g:325459,n:309232,o:7401,nc:1516,rc:5885,d:8826,r:7400},
-  {m:'2023-02',g:1303334,n:1223169,o:22714,nc:11315,rc:11399,d:61831,r:18353},
-  {m:'2023-03',g:257710,n:243432,o:4559,nc:1073,rc:3486,d:7950,r:6328},
-  {m:'2023-04',g:351579,n:334843,o:6925,nc:1767,rc:5158,d:10186,r:6551},
-  {m:'2023-05',g:345295,n:332580,o:6972,nc:1520,rc:5452,d:7391,r:5344},
-  {m:'2023-06',g:397790,n:379067,o:7769,nc:1993,rc:5776,d:10737,r:7986},
-  {m:'2023-07',g:468226,n:435824,o:8253,nc:2261,rc:5992,d:15395,r:17008},
-  {m:'2023-08',g:535405,n:506784,o:10029,nc:2564,rc:7465,d:16161,r:12460},
-  {m:'2023-09',g:630906,n:598382,o:11811,nc:3024,rc:8787,d:22697,r:9827},
-  {m:'2023-10',g:576774,n:547218,o:11141,nc:2629,rc:8512,d:21452,r:8104},
-  {m:'2023-11',g:1103957,n:995110,o:17908,nc:4880,rc:13028,d:89236,r:19610},
-  {m:'2023-12',g:993812,n:954066,o:17896,nc:4294,rc:13602,d:25872,r:13874},
-  {m:'2024-01',g:1342888,n:1285962,o:22507,nc:5987,rc:16520,d:37504,r:19426},
-  {m:'2024-02',g:942293,n:898149,o:15475,nc:3721,rc:11754,d:23404,r:20740},
-  {m:'2024-03',g:1192245,n:1126838,o:18535,nc:5041,rc:13494,d:27774,r:37656},
-  {m:'2024-04',g:1413294,n:1331261,o:21940,nc:5554,rc:16386,d:37820,r:44239},
-  {m:'2024-05',g:1386886,n:1298828,o:20954,nc:5627,rc:15327,d:39495,r:48564},
-  {m:'2024-06',g:735732,n:697999,o:12113,nc:3243,rc:8870,d:19193,r:18540},
-  {m:'2024-07',g:1147425,n:1074467,o:18375,nc:4823,rc:13552,d:34973,r:38222},
-  {m:'2024-08',g:2553936,n:2389207,o:37369,nc:11337,rc:26032,d:82796,r:81998},
-  {m:'2024-09',g:2664678,n:2472745,o:38125,nc:12080,rc:26045,d:88706,r:103273},
-  {m:'2024-10',g:3022098,n:2780419,o:44349,nc:13300,rc:31049,d:112833,r:128891},
-  {m:'2024-11',g:2464174,n:2249596,o:37164,nc:11216,rc:25948,d:109139,r:105463},
-  {m:'2024-12',g:246435,n:219389,o:3350,nc:902,rc:2448,d:12323,r:14726},
-  {m:'2025-01',g:1682657,n:1521001,o:25548,nc:6453,rc:19095,d:76290,r:85379},
-  {m:'2025-02',g:2078617,n:1855284,o:29522,nc:8747,rc:20775,d:101671,r:121690},
-  {m:'2025-03',g:1714346,n:1509213,o:24227,nc:7365,rc:16862,d:81313,r:123926},
-  {m:'2025-04',g:1209421,n:1095031,o:17475,nc:5873,rc:11602,d:51487,r:62972},
-  {m:'2025-05',g:1196477,n:1086972,o:16935,nc:5040,rc:11895,d:43952,r:65557},
-  {m:'2025-06',g:1114319,n:1014548,o:15648,nc:4389,rc:11259,d:40458,r:59335},
-  {m:'2025-07',g:1249271,n:1133644,o:17226,nc:5058,rc:12168,d:42419,r:73242},
-  {m:'2025-08',g:1087989,n:990432,o:15377,nc:4792,rc:10585,d:43330,r:54227},
-  {m:'2025-09',g:745592,n:669458,o:10424,nc:3687,rc:6737,d:30990,r:45144},
-  {m:'2025-10',g:705745,n:629506,o:9144,nc:3805,rc:5339,d:31251,r:44988},
-  {m:'2025-11',g:671467,n:598125,o:7781,nc:3499,rc:4282,d:27440,r:45902},
-  {m:'2025-12',g:713754,n:629159,o:9037,nc:4728,rc:4309,d:46257,r:38338},
-  {m:'2026-01',g:424909,n:373195,o:4858,nc:3357,rc:1501,d:29945,r:21769},
-  {m:'2026-02',g:193721,n:177957,o:2136,nc:2093,rc:43,d:13130,r:2634},
+  {m:'2020-03',g:6521,n:6251,o:77,nc:36,rc:41,d:271,r:0,sub:13,ot:64},
+  {m:'2020-04',g:20225,n:18772,o:403,nc:119,rc:284,d:1167,r:285,sub:208,ot:195},
+  {m:'2020-05',g:43418,n:41826,o:995,nc:358,rc:637,d:1563,r:29,sub:532,ot:463},
+  {m:'2020-06',g:52935,n:51880,o:1564,nc:634,rc:930,d:1025,r:30,sub:850,ot:714},
+  {m:'2020-07',g:122964,n:119538,o:3290,nc:1495,rc:1795,d:3219,r:208,sub:1617,ot:1673},
+  {m:'2020-08',g:126651,n:122077,o:2986,nc:1193,rc:1793,d:3759,r:816,sub:1562,ot:1424},
+  {m:'2020-09',g:111859,n:108309,o:2966,nc:1225,rc:1741,d:3423,r:127,sub:1716,ot:1250},
+  {m:'2020-10',g:108840,n:105670,o:2766,nc:1070,rc:1696,d:2715,r:456,sub:1757,ot:1009},
+  {m:'2020-11',g:70198,n:67183,o:1871,nc:866,rc:1005,d:2834,r:182,sub:910,ot:961},
+  {m:'2020-12',g:125604,n:119254,o:2863,nc:1483,rc:1380,d:5581,r:770,sub:963,ot:1900},
+  {m:'2021-01',g:94376,n:90409,o:2216,nc:1068,rc:1148,d:3848,r:120,sub:809,ot:1407},
+  {m:'2021-02',g:93198,n:88719,o:2104,nc:1138,rc:966,d:4217,r:263,sub:605,ot:1499},
+  {m:'2021-03',g:176116,n:168935,o:3766,nc:2102,rc:1664,d:6603,r:579,sub:1106,ot:2660},
+  {m:'2021-04',g:167626,n:159648,o:3264,nc:1820,rc:1444,d:7629,r:350,sub:895,ot:2369},
+  {m:'2021-05',g:168477,n:160758,o:3529,nc:1754,rc:1775,d:7235,r:483,sub:1316,ot:2213},
+  {m:'2021-06',g:261197,n:245997,o:5471,nc:2690,rc:2781,d:14021,r:1179,sub:1958,ot:3513},
+  {m:'2021-07',g:350902,n:329614,o:6923,nc:3629,rc:3294,d:19632,r:1656,sub:2492,ot:4431},
+  {m:'2021-08',g:189333,n:181244,o:4647,nc:2139,rc:2508,d:7912,r:177,sub:2331,ot:2316},
+  {m:'2021-09',g:132225,n:126522,o:2606,nc:1027,rc:1579,d:4997,r:706,sub:1358,ot:1248},
+  {m:'2021-10',g:82673,n:79095,o:1632,nc:759,rc:873,d:3578,r:0,sub:710,ot:922},
+  {m:'2021-11',g:53081,n:49551,o:846,nc:324,rc:522,d:3505,r:25,sub:437,ot:409},
+  {m:'2021-12',g:81653,n:77807,o:1419,nc:581,rc:838,d:3840,r:6,sub:698,ot:721},
+  {m:'2022-01',g:167903,n:159678,o:3044,nc:1273,rc:1771,d:7889,r:336,sub:1441,ot:1603},
+  {m:'2022-02',g:173480,n:164520,o:3722,nc:1731,rc:1991,d:7084,r:1875,sub:1738,ot:1984},
+  {m:'2022-03',g:123086,n:117610,o:2858,nc:1230,rc:1628,d:4531,r:946,sub:1309,ot:1549},
+  {m:'2022-04',g:214400,n:203833,o:4351,nc:1858,rc:2493,d:9516,r:1051,sub:2065,ot:2286},
+  {m:'2022-05',g:177642,n:169203,o:4355,nc:1786,rc:2569,d:6857,r:1593,sub:2407,ot:1948},
+  {m:'2022-06',g:143488,n:137147,o:3329,nc:1453,rc:1876,d:5653,r:689,sub:1518,ot:1811},
+  {m:'2022-07',g:135971,n:128285,o:3079,nc:1218,rc:1861,d:7144,r:543,sub:1554,ot:1525},
+  {m:'2022-08',g:155639,n:149851,o:3818,nc:1198,rc:2620,d:4846,r:942,sub:2400,ot:1418},
+  {m:'2022-09',g:138681,n:132808,o:3080,nc:994,rc:2086,d:5189,r:685,sub:2007,ot:1073},
+  {m:'2022-10',g:274285,n:264668,o:7000,nc:1580,rc:5420,d:8677,r:940,sub:5394,ot:1606},
+  {m:'2022-11',g:359710,n:341617,o:7681,nc:2002,rc:5679,d:16511,r:1581,sub:5517,ot:2164},
+  {m:'2022-12',g:301550,n:288503,o:6025,nc:1795,rc:4230,d:11281,r:1766,sub:4123,ot:1902},
+  {m:'2023-01',g:310565,n:300228,o:7017,nc:1501,rc:5516,d:8529,r:1809,sub:5271,ot:1746},
+  {m:'2023-02',g:1047727,n:996250,o:19544,nc:10553,rc:8991,d:48290,r:3184,sub:18323,ot:1221},
+  {m:'2023-03',g:232011,n:223126,o:4309,nc:1030,rc:3279,d:6765,r:2121,sub:3177,ot:1132},
+  {m:'2023-04',g:332061,n:319572,o:6731,nc:1713,rc:5018,d:9932,r:2556,sub:4861,ot:1870},
+  {m:'2023-05',g:331448,n:321657,o:6774,nc:1480,rc:5294,d:7136,r:2674,sub:5281,ot:1493},
+  {m:'2023-06',g:378431,n:366565,o:7558,nc:1955,rc:5603,d:9919,r:1946,sub:5498,ot:2060},
+  {m:'2023-07',g:432048,n:415502,o:7934,nc:2205,rc:5729,d:14438,r:2107,sub:5537,ot:2397},
+  {m:'2023-08',g:510973,n:491880,o:9753,nc:2481,rc:7272,d:15537,r:3556,sub:7007,ot:2746},
+  {m:'2023-09',g:615452,n:590226,o:11620,nc:2975,rc:8645,d:22248,r:2977,sub:8505,ot:3115},
+  {m:'2023-10',g:559547,n:535717,o:10896,nc:2590,rc:8306,d:20913,r:2917,sub:8199,ot:2697},
+  {m:'2023-11',g:1075192,n:982923,o:17593,nc:4846,rc:12747,d:86789,r:5481,sub:12633,ot:4960},
+  {m:'2023-12',g:965161,n:935680,o:17603,nc:4247,rc:13356,d:24841,r:4641,sub:13262,ot:4341},
+  {m:'2024-01',g:1304352,n:1259972,o:22038,nc:5937,rc:16101,d:35998,r:8387,sub:15936,ot:6102},
+  {m:'2024-02',g:911535,n:881494,o:15056,nc:3694,rc:11362,d:22632,r:7410,sub:11423,ot:3633},
+  {m:'2024-03',g:1139858,n:1105923,o:18160,nc:4994,rc:13166,d:26755,r:7201,sub:13448,ot:4712},
+  {m:'2024-04',g:1356694,n:1309447,o:21364,nc:5486,rc:15878,d:36829,r:10442,sub:16115,ot:5249},
+  {m:'2024-05',g:1324190,n:1272692,o:20310,nc:5496,rc:14814,d:36921,r:14577,sub:15418,ot:4892},
+  {m:'2024-06',g:717037,n:692242,o:11867,nc:3216,rc:8651,d:18898,r:5898,sub:9056,ot:2811},
+  {m:'2024-07',g:1114895,n:1062458,o:17993,nc:4767,rc:13226,d:33943,r:18493,sub:13644,ot:4349},
+  {m:'2024-08',g:2482755,n:2365938,o:36490,nc:11264,rc:25226,d:81359,r:35490,sub:26357,ot:10133},
+  {m:'2024-09',g:2567204,n:2446667,o:37029,nc:11951,rc:25078,d:85692,r:34857,sub:26332,ot:10697},
+  {m:'2024-10',g:2909672,n:2765088,o:43008,nc:13198,rc:29810,d:107159,r:37448,sub:31498,ot:11510},
+  {m:'2024-11',g:2368303,n:2231096,o:35964,nc:11120,rc:24844,d:106227,r:30981,sub:26464,ot:9500},
+  {m:'2024-12',g:231366,n:215906,o:3187,nc:886,rc:2301,d:11910,r:3550,sub:2396,ot:791},
 ];
 
 // ─── COUNTRY DATA ────────────────────────────────────────────────────────────
 const COUNTRIES={
-  ALL:{flag:'🌍',name:'All Markets',orders:742634,gross:46389138,net:43315446,nc:237037,rc:505584,aov:62.43,rr:68.0,dr:3.88,rtr:3.77,sub:374000,ot:368634},
-  USD:{flag:'🇺🇸',name:'United States',orders:698424,gross:43382015,net:40112330,nc:216935,rc:481476,aov:62.11,rr:68.9,dr:3.8,rtr:3.8,sub:393906,ot:304518},
-  EUR:{flag:'🇪🇺',name:'Europe',orders:34211,gross:2196613,net:2039832,nc:15180,rc:19031,aov:64.21,rr:55.6,dr:4.7,rtr:2.5,sub:11975,ot:22236},
-  GBP:{flag:'🇬🇧',name:'United Kingdom',orders:7468,gross:557937,net:465774,nc:3618,rc:3850,aov:74.71,rr:51.6,dr:6.6,rtr:9.9,sub:4462,ot:3006},
-  CAD:{flag:'🇨🇦',name:'Canada',orders:1560,gross:156414,net:136772,nc:896,rc:664,aov:100.27,rr:42.6,dr:8.0,rtr:4.5,sub:931,ot:629},
-  CHF:{flag:'🇨🇭',name:'Switzerland',orders:225,gross:23566,net:20976,nc:36,rc:189,aov:104.74,rr:84.0,dr:4.5,rtr:6.5,sub:155,ot:70},
-  SEK:{flag:'🇸🇪',name:'Sweden',orders:156,gross:12798,net:11857,nc:91,rc:65,aov:82.04,rr:41.7,dr:4.5,rtr:2.8,sub:77,ot:79},
+  ALL:{flag:'🌍',name:'All 5 Markets',orders:520344,gross:30224386,net:28865029,nc:165213,rc:355131,aov:58.09,rr:68.2,dr:3.60,rtr:0.90,sub:362523,ot:157821},
+  US:{flag:'🇺🇸',name:'United States',orders:511885,gross:29674597,net:28344818,nc:163843,rc:348042,aov:57.97,rr:68.0,dr:3.58,rtr:0.90,sub:356102,ot:155783},
+  GB:{flag:'🇬🇧',name:'United Kingdom',orders:6356,gross:393128,net:372971,nc:965,rc:5391,aov:61.85,rr:84.8,dr:4.09,rtr:1.04,sub:4847,ot:1509},
+  DE:{flag:'🇩🇪',name:'Germany',orders:761,gross:58102,net:54810,nc:160,rc:601,aov:76.35,rr:79.0,dr:4.74,rtr:0.92,sub:551,ot:210},
+  NL:{flag:'🇳🇱',name:'Netherlands',orders:1309,gross:95701,net:89775,nc:237,rc:1072,aov:73.11,rr:81.9,dr:4.86,rtr:1.33,sub:999,ot:310},
+  CA:{flag:'🇨🇦',name:'Canada',orders:33,gross:2857,net:2655,nc:8,rc:25,aov:86.58,rr:75.8,dr:7.06,rtr:0.00,sub:24,ot:9},
 };
 
-// Monthly revenue by currency (2024-01 to 2025-11 — stable period)
 const CURR_MONTHLY={
-  USD:[{m:'2024-01',g:1312704},{m:'2024-02',g:922766},{m:'2024-03',g:1142798},{m:'2024-04',g:1388421},{m:'2024-05',g:1366698},{m:'2024-06',g:720387},{m:'2024-07',g:1131254},{m:'2024-08',g:2532454},{m:'2024-09',g:2639780},{m:'2024-10',g:3002079},{m:'2024-11',g:2451512},{m:'2024-12',g:237650},{m:'2025-01',g:1659765},{m:'2025-02',g:2063057},{m:'2025-03',g:1701017},{m:'2025-04',g:1203055},{m:'2025-05',g:1188351},{m:'2025-06',g:1106516},{m:'2025-07',g:1238495},{m:'2025-08',g:1084317},{m:'2025-09',g:737781},{m:'2025-10',g:697379},{m:'2025-11',g:663086}],
-  EUR:[{m:'2024-01',g:28450},{m:'2024-02',g:19052},{m:'2024-03',g:47768},{m:'2024-04',g:21346},{m:'2024-05',g:16888},{m:'2024-06',g:13160},{m:'2024-07',g:13297},{m:'2024-08',g:21236},{m:'2024-09',g:22868},{m:'2024-10',g:10878},{m:'2024-11',g:5151},{m:'2024-12',g:3159},{m:'2025-01',g:11011},{m:'2025-02',g:9925},{m:'2025-03',g:8653},{m:'2025-04',g:2362},{m:'2025-05',g:5744},{m:'2025-06',g:6019},{m:'2025-07',g:3398},{m:'2025-08',g:2076},{m:'2025-09',g:4797},{m:'2025-10',g:4089},{m:'2025-11',g:2062}],
-  GBP:[{m:'2024-01',g:771},{m:'2024-02',g:475},{m:'2024-03',g:1597},{m:'2024-04',g:3479},{m:'2024-05',g:3300},{m:'2024-06',g:667},{m:'2024-07',g:2424},{m:'2024-08',g:246},{m:'2024-09',g:2003},{m:'2024-10',g:6839},{m:'2024-11',g:4911},{m:'2024-12',g:3583},{m:'2025-01',g:5221},{m:'2025-02',g:4078},{m:'2025-03',g:3020},{m:'2025-04',g:4003},{m:'2025-05',g:2206},{m:'2025-06',g:963},{m:'2025-07',g:6348},{m:'2025-08',g:1255},{m:'2025-09',g:2405},{m:'2025-10',g:3081},{m:'2025-11',g:3419}],
-  CAD:[{m:'2024-01',g:505},{m:'2024-02',g:0},{m:'2024-03',g:82},{m:'2024-04',g:0},{m:'2024-05',g:0},{m:'2024-06',g:0},{m:'2024-07',g:0},{m:'2024-08',g:0},{m:'2024-09',g:0},{m:'2024-10',g:0},{m:'2024-11',g:0},{m:'2024-12',g:0},{m:'2025-01',g:0},{m:'2025-02',g:0},{m:'2025-03',g:0},{m:'2025-04',g:0},{m:'2025-05',g:0},{m:'2025-06',g:0},{m:'2025-07',g:0},{m:'2025-08',g:191},{m:'2025-09',g:0},{m:'2025-10',g:0},{m:'2025-11',g:0}],
+  US:[{m:'2020-03',g:6521},{m:'2020-04',g:20225},{m:'2020-05',g:43418},{m:'2020-06',g:52935},{m:'2020-07',g:122854},{m:'2020-08',g:121723},{m:'2020-09',g:111151},{m:'2020-10',g:108840},{m:'2020-11',g:69415},{m:'2020-12',g:125484},{m:'2021-01',g:93060},{m:'2021-02',g:93198},{m:'2021-03',g:176116},{m:'2021-04',g:167626},{m:'2021-05',g:168477},{m:'2021-06',g:260558},{m:'2021-07',g:348284},{m:'2021-08',g:189333},{m:'2021-09',g:128979},{m:'2021-10',g:72951},{m:'2021-11',g:53081},{m:'2021-12',g:81314},{m:'2022-01',g:163354},{m:'2022-02',g:173417},{m:'2022-03',g:122646},{m:'2022-04',g:214151},{m:'2022-05',g:173863},{m:'2022-06',g:135463},{m:'2022-07',g:135922},{m:'2022-08',g:155639},{m:'2022-09',g:134570},{m:'2022-10',g:273996},{m:'2022-11',g:356092},{m:'2022-12',g:300293},{m:'2023-01',g:272061},{m:'2023-02',g:803452},{m:'2023-03',g:200453},{m:'2023-04',g:322014},{m:'2023-05',g:316969},{m:'2023-06',g:364447},{m:'2023-07',g:417342},{m:'2023-08',g:499613},{m:'2023-09',g:608986},{m:'2023-10',g:551171},{m:'2023-11',g:1069833},{m:'2023-12',g:957605},{m:'2024-01',g:1296317},{m:'2024-02',g:898626},{m:'2024-03',g:1132085},{m:'2024-04',g:1343121},{m:'2024-05',g:1316816},{m:'2024-06',g:709122},{m:'2024-07',g:1112120},{m:'2024-08',g:2475310},{m:'2024-09',g:2561909},{m:'2024-10',g:2901979},{m:'2024-11',g:2362316},{m:'2024-12',g:225980}],
+  GB:[{m:'2020-07',g:111},{m:'2020-08',g:4929},{m:'2020-09',g:708},{m:'2020-11',g:783},{m:'2020-12',g:121},{m:'2021-01',g:1316},{m:'2021-07',g:2101},{m:'2021-10',g:9722},{m:'2021-12',g:338},{m:'2022-01',g:1680},{m:'2022-04',g:249},{m:'2022-05',g:3779},{m:'2022-06',g:6995},{m:'2022-07',g:49},{m:'2022-09',g:4111},{m:'2022-10',g:289},{m:'2022-11',g:3618},{m:'2022-12',g:1162},{m:'2023-01',g:25847},{m:'2023-02',g:173745},{m:'2023-03',g:28972},{m:'2023-04',g:9275},{m:'2023-05',g:10804},{m:'2023-06',g:5897},{m:'2023-07',g:4626},{m:'2023-08',g:6542},{m:'2023-09',g:5407},{m:'2023-10',g:7372},{m:'2023-11',g:3766},{m:'2023-12',g:3480},{m:'2024-01',g:6167},{m:'2024-02',g:10804},{m:'2024-03',g:6273},{m:'2024-04',g:11063},{m:'2024-05',g:5159},{m:'2024-06',g:3631},{m:'2024-07',g:1758},{m:'2024-08',g:2577},{m:'2024-09',g:4255},{m:'2024-10',g:5321},{m:'2024-11',g:4953},{m:'2024-12',g:3371}],
+  DE:[{m:'2022-01',g:2869},{m:'2022-06',g:1030},{m:'2023-01',g:655},{m:'2023-02',g:28292},{m:'2023-03',g:194},{m:'2023-04',g:186},{m:'2023-05',g:3528},{m:'2023-06',g:1221},{m:'2023-07',g:2836},{m:'2023-08',g:1138},{m:'2023-10',g:361},{m:'2023-12',g:867},{m:'2024-01',g:1297},{m:'2024-02',g:518},{m:'2024-03',g:307},{m:'2024-04',g:2127},{m:'2024-05',g:335},{m:'2024-06',g:2774},{m:'2024-07',g:1017},{m:'2024-08',g:1569},{m:'2024-09',g:750},{m:'2024-10',g:2271},{m:'2024-11',g:937},{m:'2024-12',g:1024}],
+  NL:[{m:'2021-06',g:639},{m:'2021-09',g:3246},{m:'2022-12',g:95},{m:'2023-01',g:12004},{m:'2023-02',g:41425},{m:'2023-03',g:1805},{m:'2023-04',g:586},{m:'2023-05',g:147},{m:'2023-06',g:6865},{m:'2023-07',g:7243},{m:'2023-08',g:3680},{m:'2023-09',g:1059},{m:'2023-10',g:644},{m:'2023-11',g:1593},{m:'2023-12',g:3210},{m:'2024-01',g:216},{m:'2024-02',g:1587},{m:'2024-03',g:1110},{m:'2024-04',g:383},{m:'2024-05',g:1879},{m:'2024-06',g:1510},{m:'2024-08',g:3299},{m:'2024-09',g:290},{m:'2024-10',g:100},{m:'2024-11',g:98},{m:'2024-12',g:991}],
+  CA:[{m:'2021-07',g:517},{m:'2022-02',g:63},{m:'2022-03',g:441},{m:'2023-02',g:812},{m:'2023-03',g:588},{m:'2024-01',g:355},{m:'2024-03',g:82}],
 };
 
 // ─── WEEKLY WoW DATA ─────────────────────────────────────────────────────────
@@ -925,7 +910,7 @@ const COHORT_TIME_ORD = {
   '2025-11':[3406,1106,634,178,0,0,0,0,0,0,0,0,0],
   '2025-12':[4670,1467,411,0,0,0,0,0,0,0,0,0,0]
 };
-const COHORT_MONTHS=['2023-01','2023-02','2023-03','2023-04','2023-05','2023-06','2023-07','2023-08','2023-09','2023-10','2023-11','2023-12','2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08','2024-09','2024-10','2024-11','2024-12','2025-01','2025-02','2025-03','2025-04','2025-05','2025-06','2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'];
+const COHORT_MONTHS=['2023-01','2023-02','2023-03','2023-04','2023-05','2023-06','2023-07','2023-08','2023-09','2023-10','2023-11','2023-12','2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08','2024-09','2024-10','2024-11','2024-12'];
 
 let cohortMetric='revenue', cohortMode='abs';
 
@@ -977,7 +962,7 @@ function buildTimeCohort(){
   const titleEl=document.getElementById('cohort-card-title');
   const subEl=document.getElementById('cohort-card-sub');
   if(titleEl) titleEl.textContent=(cohortMetric==='revenue'?'Revenue':'Order')+' Retention Cohort';
-  if(subEl) subEl.textContent=(cohortMode==='pct'?'% of M+0 (retention rate)':cohortMetric==='revenue'?'Gross sales':'Order count')+' · Jan 2023 – Dec 2025 · M+0 = first order, M+1 = 2nd subscription order, etc.';
+  if(subEl) subEl.textContent=(cohortMode==='pct'?'% of M+0 (retention rate)':cohortMetric==='revenue'?'Gross sales':'Order count')+' · Jan 2023 – Dec 2024 · M+0 = first order, M+1 = 2nd subscription order, etc.';
 }
 
 function switchCohortMetric(metric,btn){
@@ -1037,13 +1022,13 @@ function updateRevenueChart(c){
     chart.data.labels=MD.map(d=>d.m.slice(2,7));
     chart.data.datasets[0].data=MD.map(d=>d.g);
     chart.data.datasets[1].data=MD.map(d=>d.n);
-    document.getElementById('rev-chart-sub').textContent='Full history · Feb 2020 – Feb 2026';
+    document.getElementById('rev-chart-sub').textContent='Full history · Mar 2020 – Dec 2024 · 5 markets';
   } else {
     const arr=CURR_MONTHLY[c];
     chart.data.labels=arr.map(d=>d.m.slice(2,7));
     chart.data.datasets[0].data=arr.map(d=>d.g);
     chart.data.datasets[1].data=arr.map(d=>d.g*0.93); // approx net
-    document.getElementById('rev-chart-sub').textContent=COUNTRIES[c].flag+' '+COUNTRIES[c].name+' · Jan 2024 – Nov 2025';
+    document.getElementById('rev-chart-sub').textContent=COUNTRIES[c].flag+' '+COUNTRIES[c].name+' · Mar 2020 – Dec 2024';
   }
   chart.update();
 }
@@ -1127,7 +1112,7 @@ function updateAllCharts(country){
 // ─── BUILD COUNTRY CARDS ──────────────────────────────────────────────────────
 function buildCountryCards(){
   const grid=document.getElementById('ctry-grid');
-  const keys=Object.keys(COUNTRIES).filter(k=>k!=='ALL'&&k!=='EUR');
+  const keys=Object.keys(COUNTRIES).filter(k=>k!=='ALL');
   grid.innerHTML=keys.map(k=>{
     const d=COUNTRIES[k];
     return`<div class="ctry-card" data-curr="${k}" onclick="document.getElementById('countryFilter').value='${k}';setCountry('${k}')">
@@ -1288,7 +1273,7 @@ function initCharts(){
   // 6. Sub mix
   (()=>{
     const ctx=document.getElementById('subMixChart').getContext('2d');
-    const sd=[{m:'2023-01',s:4014,o:3387},{m:'2023-06',s:3648,o:4121},{m:'2023-09',s:5625,o:6186},{m:'2023-11',s:8528,o:9380},{m:'2023-12',s:9010,o:8886},{m:'2024-01',s:11071,o:11436},{m:'2024-04',s:11831,o:10109},{m:'2024-08',s:20208,o:17161},{m:'2024-10',s:25372,o:18977},{m:'2024-11',s:21634,o:15530},{m:'2025-01',s:17363,o:8185},{m:'2025-02',s:20391,o:9131},{m:'2025-03',s:16974,o:7253},{m:'2025-06',s:12680,o:2968},{m:'2025-09',s:8006,o:2418},{m:'2025-12',s:5571,o:3466}];
+    const sd=[{m:'2023-01',s:5271,o:1746},{m:'2023-03',s:3177,o:1132},{m:'2023-04',s:4861,o:1870},{m:'2023-05',s:5281,o:1493},{m:'2023-06',s:5498,o:2060},{m:'2023-07',s:5537,o:2397},{m:'2023-08',s:7007,o:2746},{m:'2023-09',s:8505,o:3115},{m:'2023-10',s:8199,o:2697},{m:'2023-11',s:12633,o:4960},{m:'2023-12',s:13262,o:4341},{m:'2024-01',s:15936,o:6102},{m:'2024-02',s:11423,o:3633},{m:'2024-03',s:13448,o:4712},{m:'2024-04',s:16115,o:5249},{m:'2024-05',s:15418,o:4892},{m:'2024-06',s:9056,o:2811},{m:'2024-07',s:13644,o:4349},{m:'2024-08',s:26357,o:10133},{m:'2024-09',s:26332,o:10697},{m:'2024-10',s:31498,o:11510},{m:'2024-11',s:26464,o:9500},{m:'2024-12',s:2396,o:791}];
     new Chart(ctx,{type:'bar',data:{labels:sd.map(d=>d.m.slice(2,7)),datasets:[
       {label:'Sub',data:sd.map(d=>d.s),backgroundColor:'rgba(0,229,160,0.75)',borderRadius:2,borderSkipped:false},
       {label:'One-Time',data:sd.map(d=>d.o),backgroundColor:'rgba(59,158,255,0.45)',borderRadius:2,borderSkipped:false},
@@ -1298,13 +1283,13 @@ function initCharts(){
   // 7. Sub donut
   (()=>{
     const ctx=document.getElementById('subDonutChart').getContext('2d');
-    new Chart(ctx,{type:'doughnut',data:{labels:['Subscription','One-Time'],datasets:[{data:[374000,368634],backgroundColor:['rgba(0,229,160,0.85)','rgba(59,158,255,0.7)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)} orders`;}}},cutout:'65%'}}});
+    new Chart(ctx,{type:'doughnut',data:{labels:['Subscription','One-Time'],datasets:[{data:[362523,157821],backgroundColor:['rgba(0,229,160,0.85)','rgba(59,158,255,0.7)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)} orders`;}}},cutout:'65%'}}});
   })();
 
   // 8. Sub retention
   (()=>{
     const ctx=document.getElementById('subRetChart').getContext('2d');
-    const vals=[84366,29262,17100,11806,9088,7049,5519,10000];
+    const vals=[81773,28355,16577,11443,8807,6831,5348,9693];
     new Chart(ctx,{type:'bar',data:{labels:['1st','#2','#3','#4','#5','#6','#7','#8+'],datasets:[{label:'Orders',data:vals,backgroundColor:vals.map((_,i)=>`rgba(0,229,160,${0.9-i*0.1})`),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` Orders: ${fmtN(c.parsed.y)}`;}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}});
   })();
 
@@ -1320,7 +1305,7 @@ function initCharts(){
   // 15. UTM Revenue bar
   (()=>{
     const ctx=document.getElementById('utmRevChart').getContext('2d');
-    const data=[['Paid',8052320],['Email',2081366],['SMS',1512462],['Flow',1298254],['PSM',298171],['CPC',74528]];
+    const data=[['Paid',5247000],['Email',1357000],['SMS',986000],['Flow',846000],['PSM',194000],['CPC',49000]];
     new Chart(ctx,{type:'bar',data:{labels:data.map(d=>d[0]),datasets:[{label:'Revenue',data:data.map(d=>d[1]),backgroundColor:PAL.slice(0,6).map(c=>c+'bb'),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${fmtK(c.parsed.y)}`;}}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtK(v)}}}}}});
   })();
 
@@ -1344,19 +1329,19 @@ function initCharts(){
   // 19. Email health
   (()=>{
     const ctx=document.getElementById('emailChart').getContext('2d');
-    new Chart(ctx,{type:'doughnut',data:{labels:['Subscribed','Unsubscribed','Not Subscribed'],datasets:[{data:[436655,267165,38170],backgroundColor:['rgba(0,229,160,0.85)','rgba(255,77,109,0.75)','rgba(59,158,255,0.6)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)}`;}}},cutout:'60%'}}});
+    new Chart(ctx,{type:'doughnut',data:{labels:['Subscribed','Unsubscribed','Not Subscribed'],datasets:[{data:[277357,212377,30191],backgroundColor:['rgba(0,229,160,0.85)','rgba(255,77,109,0.75)','rgba(59,158,255,0.6)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)}`;}}},cutout:'60%'}}});
   })();
 
   // 20. Fulfillment donut
   (()=>{
     const ctx=document.getElementById('fulfillChart').getContext('2d');
-    new Chart(ctx,{type:'doughnut',data:{labels:['Fulfilled','Unfulfilled','Partial','Restocked'],datasets:[{data:[720161,20900,1355,218],backgroundColor:['rgba(0,229,160,0.85)','rgba(255,77,109,0.7)','rgba(255,179,71,0.7)','rgba(59,158,255,0.6)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)}`;}}},cutout:'60%'}}});
+    new Chart(ctx,{type:'doughnut',data:{labels:['Fulfilled'],datasets:[{data:[520344],backgroundColor:['rgba(0,229,160,0.85)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)}`;}}},cutout:'60%'}}});
   })();
 
   // 21. Cancellation bar
   (()=>{
     const ctx=document.getElementById('cancelChart').getContext('2d');
-    new Chart(ctx,{type:'bar',data:{labels:['Completed','Customer','Fraud','Other','Inventory'],datasets:[{label:'Orders',data:[727590,14107,458,413,65],backgroundColor:['rgba(0,229,160,0.85)','rgba(255,77,109,0.75)','rgba(255,179,71,0.7)','rgba(59,158,255,0.65)','rgba(167,139,250,0.6)'],borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${fmtN(c.parsed.x)}`;}}}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}},y:{grid:{display:false}}}}});
+    new Chart(ctx,{type:'bar',data:{labels:['Skio Subs','Online Store','Transporter','Recharge','Bundler','Shop'],datasets:[{label:'Net Revenue',data:[14786000,12304000,849000,457000,225000,143000],backgroundColor:PAL.slice(0,6).map(c=>c+'bb'),borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${fmtK(c.parsed.x)}`;}}}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtK(v)}},y:{grid:{display:false}}}}});
   })();
 
   // 22. Health trend (returns/discounts %)
