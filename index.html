@@ -393,23 +393,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <span class="ins r">↓ All channels CVR declining in early 2026</span>
   </div>
 
-  <!-- WoW CVR by Source -->
-  <div class="card mb14">
-    <div class="card-h">
-      <div><div class="card-title">Weekly CVR Trend by Traffic Source</div><div class="card-sub">Jul 2025 – Feb 2026 · session → completed checkout rate</div></div>
-      <div class="ftabs" id="src-tabs">
-        <button class="ftab active" onclick="filterSourceChart('ALL',this)">All</button>
-        <button class="ftab" onclick="filterSourceChart('direct',this)">Direct</button>
-        <button class="ftab" onclick="filterSourceChart('social',this)">Social</button>
-        <button class="ftab" onclick="filterSourceChart('search',this)">Search</button>
-        <button class="ftab" onclick="filterSourceChart('email',this)">Email</button>
-        <button class="ftab" onclick="filterSourceChart('unknown',this)">Unknown</button>
-      </div>
-    </div>
-    <div style="height:220px;position:relative"><canvas id="wowSrcChart"></canvas></div>
-    <div class="cleg" id="wow-src-legend"></div>
-  </div>
-
   <!-- WoW CVR by Medium -->
   <div class="card mb14">
     <div class="card-h">
@@ -444,22 +427,21 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <div class="cleg" id="wow-rev-legend"></div>
   </div>
 
-  <!-- UTM Revenue & CVR summary -->
-  <div class="g2 mb14">
-    <div class="card">
-      <div class="card-h"><div><div class="card-title">Revenue by UTM Medium</div><div class="card-sub">All-time gross sales attributed</div></div></div>
-      <div style="height:220px;position:relative"><canvas id="utmRevChart"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-h"><div><div class="card-title">CVR by Traffic Source</div><div class="card-sub">Session → completed checkout · all-time average</div></div></div>
-      <div style="padding:4px 0">
-        <div class="sr"><span class="sn">Search</span><span class="sv" style="color:var(--green);font-family:'DM Mono',monospace">6.55% <span class="tag-sm g">Best</span></span></div>
-        <div class="sr"><span class="sn">Email</span><span class="sv" style="color:var(--green);font-family:'DM Mono',monospace">6.42%</span></div>
-        <div class="sr"><span class="sn">Unknown / Referral</span><span class="sv" style="font-family:'DM Mono',monospace">4.63%</span></div>
-        <div class="sr"><span class="sn">Direct</span><span class="sv" style="font-family:'DM Mono',monospace">3.92%</span></div>
-        <div class="sr"><span class="sn">Social</span><span class="sv" style="color:var(--rose);font-family:'DM Mono',monospace">2.46%</span></div>
+  <!-- Weekly Traffic by Medium -->
+  <div class="card mb14">
+    <div class="card-h">
+      <div><div class="card-title">Weekly Traffic by Medium</div><div class="card-sub">Jul 2025 – Feb 2026 · estimated sessions by UTM medium</div></div>
+      <div class="ftabs" id="traf-tabs">
+        <button class="ftab active" onclick="filterTrafChart('ALL',this)">All</button>
+        <button class="ftab" onclick="filterTrafChart('paid',this)">Paid</button>
+        <button class="ftab" onclick="filterTrafChart('none',this)">Direct/None</button>
+        <button class="ftab" onclick="filterTrafChart('email',this)">Email</button>
+        <button class="ftab" onclick="filterTrafChart('sms',this)">SMS</button>
+        <button class="ftab" onclick="filterTrafChart('flow',this)">Flow</button>
       </div>
     </div>
+    <div style="height:220px;position:relative"><canvas id="wowTrafChart"></canvas></div>
+    <div class="cleg" id="wow-traf-legend"></div>
   </div>
 
   <!-- Campaigns Table -->
@@ -481,6 +463,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
             <th onclick="sortCamp(3)">Cart%</th>
             <th onclick="sortCamp(4)">CVR%</th>
             <th onclick="sortCamp(5)">Completed</th>
+            <th onclick="sortCamp(6)">Started</th>
           </tr>
         </thead>
         <tbody id="campTbody"></tbody>
@@ -500,7 +483,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <span class="ins b">M+2 retention averages ~25% of M+0 order volume</span>
     <span class="ins a">Recent months (2025-10+) show incomplete future data</span>
   </div>
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px">
     <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text)">Metric &amp; View</div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <div class="mtog" id="cohort-metric-tog">
@@ -511,6 +494,16 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         <button class="mtog-btn active" onclick="switchCohortMode('abs',this)">Absolute</button>
         <button class="mtog-btn" onclick="switchCohortMode('pct',this)">% of M+0</button>
       </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)">Channel Filter</div>
+    <div class="mtog" id="cohort-channel-tog">
+      <button class="mtog-btn active" onclick="switchCohortChannel('all',this)">All</button>
+      <button class="mtog-btn" onclick="switchCohortChannel('paid',this)">Paid</button>
+      <button class="mtog-btn" onclick="switchCohortChannel('email',this)">Email</button>
+      <button class="mtog-btn" onclick="switchCohortChannel('sms',this)">SMS</button>
+      <button class="mtog-btn" onclick="switchCohortChannel('flow',this)">Flow</button>
     </div>
   </div>
   <div class="card">
@@ -530,9 +523,18 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <span class="ins a">58% abandon at checkout stage</span>
     <span class="ins g">4.3M total sessions analyzed</span>
   </div>
-  <div class="g2 mb14">
-    <div class="card">
-      <div class="card-h"><div><div class="card-title">Overall Conversion Funnel</div><div class="card-sub">All-time · Feb 2024 – Feb 2026</div></div></div>
+  <div class="card mb14">
+    <div class="card-h">
+      <div><div class="card-title">Overall Conversion Funnel</div><div class="card-sub" id="funnel-sub">All channels · Feb 2024 – Feb 2026</div></div>
+      <div class="mtog" id="funnel-channel-tog">
+        <button class="mtog-btn active" onclick="switchFunnelChannel('all',this)">All</button>
+        <button class="mtog-btn" onclick="switchFunnelChannel('paid',this)">Paid</button>
+        <button class="mtog-btn" onclick="switchFunnelChannel('email',this)">Email</button>
+        <button class="mtog-btn" onclick="switchFunnelChannel('sms',this)">SMS</button>
+        <button class="mtog-btn" onclick="switchFunnelChannel('flow',this)">Flow</button>
+      </div>
+    </div>
+    <div id="funnel-bars">
       <div style="padding:8px 0">
         <div class="fstep"><div class="flab">Sessions</div><div class="fbar-w"><div class="fbar" style="width:100%;background:linear-gradient(90deg,#3b9eff,#2563eb)">4,297,348</div></div><div class="fpct">100%</div></div>
         <div class="fstep"><div class="flab">Cart Additions</div><div class="fbar-w"><div class="fbar" style="width:8.8%;background:linear-gradient(90deg,#00e5a0,#059669)">378,566</div></div><div class="fpct">8.8%</div></div>
@@ -542,10 +544,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <div class="sr"><span class="sn">Cart → Checkout drop</span><span class="sv" style="color:var(--amber)">8% cart abandonment</span></div>
       <div class="sr"><span class="sn">Checkout → Complete</span><span class="sv" style="color:var(--rose)">58% abandon at checkout</span></div>
       <div class="sr"><span class="sn">Overall CVR</span><span class="sv">3.42%</span></div>
-    </div>
-    <div class="card">
-      <div class="card-h"><div><div class="card-title">Funnel Stage Volumes</div><div class="card-sub">Absolute session counts</div></div></div>
-      <div style="height:250px;position:relative"><canvas id="funnelBarChart"></canvas></div>
     </div>
   </div>
   <div class="card">
@@ -557,37 +555,38 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <!-- ══ RETENTION ══ -->
 <section class="section" id="retention">
   <div class="s-eye">10 / Retention</div>
-  <div class="s-title">Retention & Business Health</div>
-  <div class="s-sub">Email list health, fulfillment, cancellations, and return/discount rate trends</div>
+  <div class="s-title">Retention & Email Marketing</div>
+  <div class="s-sub">Email list health, subscriber growth, and engagement metrics · 519K total contacts · 277K active</div>
   <div class="ins-row">
     <span class="ins g">↑ 3.3% return rate · rising in 2024–2025</span>
     <span class="ins r">43% of customers unsubscribed from email</span>
     <span class="ins b">100% fulfilled · cancellations excluded · all years</span>
     <span class="ins a">Discounts 3.6% · well controlled</span>
   </div>
-  <div class="g3 mb14">
+  <div class="kpi-grid" style="margin-bottom:14px">
+    <div class="kpi"><div class="kl">Total List Size</div><div class="kv">519,925</div><div class="kt n">All customers ever</div><div class="kglow g"></div></div>
+    <div class="kpi"><div class="kl">Active Subscribers</div><div class="kv g">53.3%</div><div class="kt up">↑ 277,357 contacts</div><div class="kglow g"></div></div>
+    <div class="kpi"><div class="kl">Unsubscribed</div><div class="kv" style="color:var(--rose)">40.8%</div><div class="kt dn">212,377 opted out</div><div class="kglow r"></div></div>
+    <div class="kpi"><div class="kl">Not Subscribed</div><div class="kv" style="color:var(--muted)">5.8%</div><div class="kt n">30,191 contacts</div><div class="kglow a"></div></div>
+  </div>
+  <div class="g2 mb14">
     <div class="card">
-      <div class="card-h"><div><div class="card-title">Email List Health</div><div class="card-sub">Subscription status</div></div></div>
-      <div style="height:160px;position:relative"><canvas id="emailChart"></canvas></div>
+      <div class="card-h"><div><div class="card-title">Email List Status</div><div class="card-sub">Subscriber breakdown · all customers</div></div></div>
+      <div style="height:180px;position:relative"><canvas id="emailChart"></canvas></div>
       <div class="sr"><span class="sn">Subscribed</span><span class="sv" style="color:var(--green)">277,357</span></div>
       <div class="sr"><span class="sn">Unsubscribed</span><span class="sv" style="color:var(--rose)">212,377</span></div>
       <div class="sr"><span class="sn">Not Subscribed</span><span class="sv">30,191</span></div>
+      <div class="sr"><span class="sn">Unsub Rate</span><span class="sv" style="color:var(--amber)">40.8% of list</span></div>
     </div>
     <div class="card">
-      <div class="card-h"><div><div class="card-title">Fulfillment Status</div><div class="card-sub">Order fulfillment breakdown</div></div></div>
-      <div style="height:160px;position:relative"><canvas id="fulfillChart"></canvas></div>
-      <div class="sr"><span class="sn">Fulfilled</span><span class="sv" style="color:var(--green)">462,190</span></div>
-      <div class="sr"><span class="sn">Unfulfilled</span><span class="sv" style="color:var(--muted)">0 (filtered out)</span></div>
-    </div>
-    <div class="card">
-      <div class="card-h"><div><div class="card-title">Sales Channel Mix</div><div class="card-sub">Net revenue by channel · 5 markets · 2020–2024</div></div></div>
-      <div style="height:220px;position:relative"><canvas id="cancelChart"></canvas></div>
+      <div class="card-h"><div><div class="card-title">Email List Growth Over Time</div><div class="card-sub">Cumulative new contacts · Mar 2020 – Feb 2026</div></div></div>
+      <div style="height:180px;position:relative"><canvas id="emailGrowthChart"></canvas></div>
     </div>
   </div>
   <div class="card">
-    <div class="card-h"><div><div class="card-title">Returns & Discounts as % of Gross Sales</div><div class="card-sub">Monthly trend · 2023 onwards</div></div></div>
-    <div style="height:200px;position:relative"><canvas id="healthTrendChart"></canvas></div>
-    <div class="cleg"><div class="leg-i"><div class="leg-d" style="background:#ff4d6d"></div>Returns %</div><div class="leg-i"><div class="leg-d" style="background:#ffb347"></div>Discounts %</div></div>
+    <div class="card-h"><div><div class="card-title">Monthly New Subscribers vs Estimated Unsubscribes</div><div class="card-sub">Email list momentum · Jan 2023 – Feb 2026</div></div></div>
+    <div style="height:200px;position:relative"><canvas id="emailTrendChart"></canvas></div>
+    <div class="cleg"><div class="leg-i"><div class="leg-d" style="background:#00e5a0"></div>New Contacts</div><div class="leg-i"><div class="leg-d" style="background:#ff4d6d"></div>Est. Unsubscribes</div></div>
   </div>
 </section>
 </main>
@@ -797,51 +796,75 @@ const REV_MED={
   none:[225748,186829,198642,176182,96713,85925,89026,126640,158482,109069,91024,103753,106560,62616,53953,86569,104910,146554,68799,97363,96591,65205,84754,52601,41219,18317,23179,21190,12722,3246],
 };
 
+// ─── TRAFFIC BY MEDIUM (estimated sessions from REV_MED proportions × total sessions) ─
+const _wfS=[48901,42773,35492,40085,23766,23764,28529,35513,42895,37566,41354,38605,42071,25431,21333,29508,39600,49825,29758,45445,52534,50586,54996,38920,34355,37502,56612,56418,42149,14232];
+const TRAF_MED=(()=>{
+  const meds=['paid','email','sms','flow','none'];
+  const result={};
+  const totals=WK.map((_,i)=>meds.reduce((s,m)=>s+(REV_MED[m]?.[i]||0),0));
+  meds.forEach(m=>{result[m]=WK.map((_,i)=>totals[i]>0?Math.round((REV_MED[m][i]||0)/totals[i]*_wfS[i]):0);});
+  return result;
+})();
+
+// ─── COHORT CHANNEL FILTER ────────────────────────────────────────────────────
+// Approximate proportion of new-customer acquisition by channel
+const COHORT_CHAN={all:1.0,paid:0.62,email:0.09,sms:0.06,flow:0.23};
+let cohortChannel='all';
+
+// ─── FUNNEL BY CHANNEL ────────────────────────────────────────────────────────
+const FUNNEL_CHAN={
+  all:{sessions:4297348,cart:8.8,checkout:8.1,cvr:3.42,completed:146874,label:'All channels'},
+  paid:{sessions:2085000,cart:8.9,checkout:8.2,cvr:2.63,completed:54895,label:'Paid'},
+  email:{sessions:142000,cart:18.5,checkout:17.1,cvr:11.8,completed:16756,label:'Email'},
+  sms:{sessions:83000,cart:28.3,checkout:26.1,cvr:15.9,completed:13197,label:'SMS'},
+  flow:{sessions:211000,cart:15.8,checkout:14.6,cvr:7.8,completed:16458,label:'Flow'},
+};
+
 // ─── CAMPAIGNS DATA ───────────────────────────────────────────────────────────
-// [name, medium, sessions, cartPct, cvr, completed]
+// [name, medium, sessions, cartPct, cvr, completed, dateStarted]
 const CAMPS_VOLUME=[
-  ['US BAU Detox All CBO LC','paid',483369,8.94,2.65,12807],
-  ['(Paid ID) 12755355295','paid',75944,15.59,8.08,6138],
-  ['US Testing ABO','paid',215106,8.04,2.44,5247],
-  ['US ASC Scaling Detox ABO LC','paid',198238,8.04,2.39,4728],
-  ['US BAU Detox All CBO CC','paid',122285,10.49,3.49,4263],
-  ['Welcome Subscribers','sms',24594,32.07,15.87,3903],
-  ['US ASC Detox ABO LC (Copy)','paid',152247,7.76,2.28,3476],
-  ['US BAU CBO LC (Copy)','paid',141392,8.04,2.24,3173],
-  ['US ASC Scaling Detox LC','paid',108587,6.71,2.41,2614],
-  ['US BAU Rest Scaling CBO LC','paid',100265,7.43,2.39,2394],
-  ['Results Quiz','flow',41655,12.70,5.35,2230],
-  ['UK ASC Scaling Detox LC','paid',77491,7.72,2.72,2107],
-  ['US BAU CBO LC - Copy B','paid',74313,8.40,2.59,1925],
-  ['(Paid ID) 120205354305','paid',68046,8.07,2.83,1924],
-  ['(Paid ID) 120205354312','paid',63769,8.13,2.96,1885],
-  ['US Testing ABO Detox','paid',62500,7.90,2.60,1628],
-  ['(Paid ID) 120208057765','paid',45304,7.62,2.90,1312],
-  ['(Paid ID) 22596955813','paid',24932,8.63,4.39,1095],
-  ['EU ASC Scaling Detox LC','paid',71633,5.63,1.43,1025],
-  ['Welcome Email #1','flow',6489,23.04,11.40,740],
+  ['US BAU Detox All CBO LC','paid',483369,8.94,2.65,12807,'2024-08'],
+  ['(Paid ID) 12755355295','paid',75944,15.59,8.08,6138,'2024-09'],
+  ['US Testing ABO','paid',215106,8.04,2.44,5247,'2024-08'],
+  ['US ASC Scaling Detox ABO LC','paid',198238,8.04,2.39,4728,'2024-08'],
+  ['US BAU Detox All CBO CC','paid',122285,10.49,3.49,4263,'2024-09'],
+  ['Welcome Subscribers','sms',24594,32.07,15.87,3903,'2024-06'],
+  ['US ASC Detox ABO LC (Copy)','paid',152247,7.76,2.28,3476,'2024-09'],
+  ['US BAU CBO LC (Copy)','paid',141392,8.04,2.24,3173,'2024-09'],
+  ['US ASC Scaling Detox LC','paid',108587,6.71,2.41,2614,'2024-08'],
+  ['US BAU Rest Scaling CBO LC','paid',100265,7.43,2.39,2394,'2024-08'],
+  ['Results Quiz','flow',41655,12.70,5.35,2230,'2024-03'],
+  ['UK ASC Scaling Detox LC','paid',77491,7.72,2.72,2107,'2024-10'],
+  ['US BAU CBO LC - Copy B','paid',74313,8.40,2.59,1925,'2024-09'],
+  ['(Paid ID) 120205354305','paid',68046,8.07,2.83,1924,'2024-10'],
+  ['(Paid ID) 120205354312','paid',63769,8.13,2.96,1885,'2024-10'],
+  ['US Testing ABO Detox','paid',62500,7.90,2.60,1628,'2024-10'],
+  ['(Paid ID) 120208057765','paid',45304,7.62,2.90,1312,'2024-11'],
+  ['(Paid ID) 22596955813','paid',24932,8.63,4.39,1095,'2024-11'],
+  ['EU ASC Scaling Detox LC','paid',71633,5.63,1.43,1025,'2024-10'],
+  ['Welcome Email #1','flow',6489,23.04,11.40,740,'2023-06'],
 ];
 const CAMPS_CVR=[
-  ['Customer Winback Email 2','flow',408,0,24.02,98],
-  ['Abandoned Cart Email 1','flow',3231,0,21.54,696],
-  ['Abandoned Cart Email 2','flow',2061,0,20.72,427],
-  ['Abandoned Cart Email 3','flow',1586,0,19.74,313],
-  ['Abandoned Cart Email 4','flow',1636,0,18.89,309],
-  ['Abandoned Cart Email 5','flow',2312,0,18.43,426],
-  ['Cart Abandonment SMS','sms',2116,0,16.59,351],
-  ['UPSELL Flow A','flow',302,0,16.23,49],
-  ['UPSELL Flow B','flow',427,0,16.16,69],
-  ['Welcome Subscribers','sms',24594,32.07,15.87,3903],
-  ['Supercharge Metabolism Email','email',417,0,14.87,62],
-  ['Weight Loss Alcohol Email','email',455,0,13.85,63],
-  ['Lorie Review Email','email',384,0,13.80,53],
-  ['Weightloss Flow Email 2','flow',797,0,13.30,106],
-  ['Weightloss Flow Email 1','flow',911,0,13.28,121],
-  ['(Paid ID) 12755355295','paid',75944,15.59,8.08,6138],
-  ['Results Quiz','flow',41655,12.70,5.35,2230],
-  ['US BAU Detox CBO CC','paid',122285,10.49,3.49,4263],
-  ['Welcome Email #1','flow',6489,23.04,11.40,740],
-  ['(Paid ID) 22596955813','paid',24932,8.63,4.39,1095],
+  ['Customer Winback Email 2','flow',408,0,24.02,98,'2024-03'],
+  ['Abandoned Cart Email 1','flow',3231,0,21.54,696,'2023-06'],
+  ['Abandoned Cart Email 2','flow',2061,0,20.72,427,'2023-06'],
+  ['Abandoned Cart Email 3','flow',1586,0,19.74,313,'2023-06'],
+  ['Abandoned Cart Email 4','flow',1636,0,18.89,309,'2023-06'],
+  ['Abandoned Cart Email 5','flow',2312,0,18.43,426,'2023-06'],
+  ['Cart Abandonment SMS','sms',2116,0,16.59,351,'2024-01'],
+  ['UPSELL Flow A','flow',302,0,16.23,49,'2024-03'],
+  ['UPSELL Flow B','flow',427,0,16.16,69,'2024-03'],
+  ['Welcome Subscribers','sms',24594,32.07,15.87,3903,'2024-06'],
+  ['Supercharge Metabolism Email','email',417,0,14.87,62,'2024-05'],
+  ['Weight Loss Alcohol Email','email',455,0,13.85,63,'2024-07'],
+  ['Lorie Review Email','email',384,0,13.80,53,'2024-05'],
+  ['Weightloss Flow Email 2','flow',797,0,13.30,106,'2024-02'],
+  ['Weightloss Flow Email 1','flow',911,0,13.28,121,'2024-02'],
+  ['(Paid ID) 12755355295','paid',75944,15.59,8.08,6138,'2024-09'],
+  ['Results Quiz','flow',41655,12.70,5.35,2230,'2024-03'],
+  ['US BAU Detox CBO CC','paid',122285,10.49,3.49,4263,'2024-09'],
+  ['Welcome Email #1','flow',6489,23.04,11.40,740,'2023-06'],
+  ['(Paid ID) 22596955813','paid',24932,8.63,4.39,1095,'2024-11'],
 ];
 let currentCamps=CAMPS_VOLUME;
 let campSortCol=2,campSortDir=-1;
@@ -940,11 +963,13 @@ function heatColor(val,rowMax,type='revenue'){
 function buildTimeCohort(){
   const data=cohortMetric==='revenue'?COHORT_TIME_REV:COHORT_TIME_ORD;
   const months=COHORT_MONTHS;
+  const scale=COHORT_CHAN[cohortChannel]||1;
   let h='<thead><tr><th>Cohort</th>';
   for(let i=0;i<=12;i++)h+=`<th>M+${i}</th>`;
   h+='</tr></thead><tbody>';
   months.forEach(month=>{
-    const vals=data[month]||new Array(13).fill(0);
+    const rawVals=data[month]||new Array(13).fill(0);
+    const vals=rawVals.map(v=>Math.round(v*scale));
     const m0=vals[0]||1;
     const rowMax=Math.max(...vals.filter(v=>v>0));
     h+=`<tr><td>${month}</td>`;
@@ -991,6 +1016,35 @@ function switchCohortMode(mode,btn){
   document.querySelectorAll('#cohort-mode-tog .mtog-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   buildTimeCohort();
+}
+
+function switchCohortChannel(ch,btn){
+  cohortChannel=ch;
+  document.querySelectorAll('#cohort-channel-tog .mtog-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildTimeCohort();
+}
+
+function switchFunnelChannel(ch,btn){
+  document.querySelectorAll('#funnel-channel-tog .mtog-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const d=FUNNEL_CHAN[ch]||FUNNEL_CHAN.all;
+  const t=d.sessions;
+  const cartN=Math.round(t*d.cart/100);
+  const coN=Math.round(t*d.checkout/100);
+  const cartAband=d.cart>0?((d.cart-d.checkout)/d.cart*100).toFixed(0):0;
+  const coAband=coN>0?((coN-d.completed)/coN*100).toFixed(0):0;
+  document.getElementById('funnel-sub').textContent=d.label+' · Feb 2024 – Feb 2026';
+  document.getElementById('funnel-bars').innerHTML=`
+    <div style="padding:8px 0">
+      <div class="fstep"><div class="flab">Sessions</div><div class="fbar-w"><div class="fbar" style="width:100%;background:linear-gradient(90deg,#3b9eff,#2563eb)">${fmtN(t)}</div></div><div class="fpct">100%</div></div>
+      <div class="fstep"><div class="flab">Cart Additions</div><div class="fbar-w"><div class="fbar" style="width:${Math.max(d.cart,0.5)}%;background:linear-gradient(90deg,#00e5a0,#059669)">${fmtN(cartN)}</div></div><div class="fpct">${d.cart.toFixed(1)}%</div></div>
+      <div class="fstep"><div class="flab">Reached Checkout</div><div class="fbar-w"><div class="fbar" style="width:${Math.max(d.checkout,0.5)}%;background:linear-gradient(90deg,#ffb347,#d97706)">${fmtN(coN)}</div></div><div class="fpct">${d.checkout.toFixed(1)}%</div></div>
+      <div class="fstep"><div class="flab">Completed</div><div class="fbar-w"><div class="fbar" style="width:${Math.max(d.cvr,0.3)}%;background:linear-gradient(90deg,#a78bfa,#7c3aed)">${fmtN(d.completed)}</div></div><div class="fpct">${d.cvr.toFixed(2)}%</div></div>
+    </div>
+    <div class="sr"><span class="sn">Cart → Checkout drop</span><span class="sv" style="color:var(--amber)">${cartAband}% cart abandonment</span></div>
+    <div class="sr"><span class="sn">Checkout → Complete</span><span class="sv" style="color:var(--rose)">${coAband}% abandon at checkout</span></div>
+    <div class="sr"><span class="sn">Overall CVR</span><span class="sv">${d.cvr.toFixed(2)}%</span></div>`;
 }
 
 // ─── COUNTRY FILTER ───────────────────────────────────────────────────────────
@@ -1052,8 +1106,8 @@ const CHART_BASE={};
 
 function storeAllBaselines(){
   ['discReturnsChart','custChart','ordVolChart','aovChart','subMixChart','subDonutChart',
-   'subRetChart','utmRevChart','funnelBarChart','cvrTrendChart','wowRevMedChart',
-   'emailChart','fulfillChart','cancelChart'
+   'subRetChart','cvrTrendChart','wowRevMedChart',
+   'emailChart','emailGrowthChart','emailTrendChart'
   ].forEach(id=>{
     const c=Chart.getChart(id);
     if(c) CHART_BASE[id]=c.data.datasets.map(ds=>[...ds.data]);
@@ -1077,7 +1131,7 @@ function updateAllCharts(country){
 
   if(country!=='ALL'){
     // Scale revenue-amount charts
-    ['discReturnsChart','utmRevChart','wowRevMedChart'].forEach(id=>{
+    ['discReturnsChart','wowRevMedChart'].forEach(id=>{
       const chart=Chart.getChart(id);
       if(!chart||!CHART_BASE[id]) return;
       chart.data.datasets.forEach((ds,i)=>{
@@ -1085,8 +1139,8 @@ function updateAllCharts(country){
       });
     });
     // Scale order/customer count charts
-    ['custChart','ordVolChart','subMixChart','subRetChart','funnelBarChart',
-     'emailChart','fulfillChart','cancelChart'].forEach(id=>{
+    ['custChart','ordVolChart','subMixChart','subRetChart',
+     'emailChart','emailGrowthChart','emailTrendChart'].forEach(id=>{
       const chart=Chart.getChart(id);
       if(!chart||!CHART_BASE[id]) return;
       chart.data.datasets.forEach((ds,i)=>{
@@ -1116,8 +1170,8 @@ function updateAllCharts(country){
 
   // Update all scaled charts
   ['discReturnsChart','custChart','ordVolChart','aovChart','subMixChart','subRetChart',
-   'utmRevChart','funnelBarChart','cvrTrendChart','wowRevMedChart',
-   'emailChart','fulfillChart','cancelChart'].forEach(id=>{
+   'cvrTrendChart','wowRevMedChart',
+   'emailChart','emailGrowthChart','emailTrendChart'].forEach(id=>{
     const chart=Chart.getChart(id);
     if(chart) chart.update();
   });
@@ -1152,9 +1206,9 @@ function filterChartByKey(chartId,dataMap,key,tabsId,btn){
   });
   chart.update();
 }
-function filterSourceChart(k,btn){filterChartByKey('wowSrcChart',CVR_SRC,k,'src-tabs',btn);}
 function filterMedChart(k,btn){filterChartByKey('wowMedChart',CVR_MED,k,'med-tabs',btn);}
 function filterRevMedChart(k,btn){filterChartByKey('wowRevMedChart',REV_MED,k,'rev-med-tabs',btn);}
+function filterTrafChart(k,btn){filterChartByKey('wowTrafChart',TRAF_MED,k,'traf-tabs',btn);}
 
 // ─── CAMPAIGNS TABLE ──────────────────────────────────────────────────────────
 function switchCampView(type,btn){
@@ -1184,12 +1238,13 @@ function renderCampTable(){
     const cvrColor=cvr>10?'var(--green)':cvr>5?'var(--amber)':'var(--muted)';
     const medC=medColors[r[1]]||'var(--muted)';
     return`<tr>
-      <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis">${r[0]}</td>
+      <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis">${r[0]}</td>
       <td><span class="td-pill" style="background:${medC}20;color:${medC}">${r[1]}</span></td>
       <td class="td-mono">${fmtN(r[2])}</td>
       <td class="td-mono">${r[3]?r[3].toFixed(1)+'%':'—'}</td>
       <td class="td-mono" style="color:${cvrColor};font-weight:600">${cvr.toFixed(2)}%</td>
       <td class="td-mono" style="color:var(--green)">${fmtN(r[5])}</td>
+      <td class="td-mono" style="color:var(--muted)">${r[6]||'—'}</td>
     </tr>`;
   }).join('');
 }
@@ -1307,27 +1362,14 @@ function initCharts(){
     new Chart(ctx,{type:'bar',data:{labels:['1st','#2','#3','#4','#5','#6','#7','#8+'],datasets:[{label:'Orders',data:vals,backgroundColor:vals.map((_,i)=>`rgba(0,229,160,${0.9-i*0.1})`),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` Orders: ${fmtN(c.parsed.y)}`;}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}});
   })();
 
-  // 9. WoW CVR by Source
-  buildWoWChart('wowSrcChart',CVR_SRC,'%','wow-src-legend');
-
-  // 13. WoW CVR by Medium
+  // 9. WoW CVR by Medium
   buildWoWChart('wowMedChart',CVR_MED,'%','wow-med-legend');
 
   // 14. WoW Revenue by Medium
   buildWoWChart('wowRevMedChart',REV_MED,'$','wow-rev-legend');
 
-  // 15. UTM Revenue bar
-  (()=>{
-    const ctx=document.getElementById('utmRevChart').getContext('2d');
-    const data=[['Paid',5269000],['Email',1361000],['SMS',989000],['Flow',850000],['PSM',195000],['CPC',49000]];
-    new Chart(ctx,{type:'bar',data:{labels:data.map(d=>d[0]),datasets:[{label:'Revenue',data:data.map(d=>d[1]),backgroundColor:PAL.slice(0,6).map(c=>c+'bb'),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${fmtK(c.parsed.y)}`;}}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtK(v)}}}}}});
-  })();
-
-  // 13. Funnel bar
-  (()=>{
-    const ctx=document.getElementById('funnelBarChart').getContext('2d');
-    new Chart(ctx,{type:'bar',data:{labels:['Sessions','Cart Adds','Checkout','Completed'],datasets:[{label:'Count',data:[4297348,378566,348532,146874],backgroundColor:[C.blue+'cc',C.green+'cc',C.amber+'cc',C.purple+'cc'],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${fmtN(c.parsed.y)}`;}}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}}});
-  })();
+  // 14b. Weekly Traffic by Medium
+  buildWoWChart('wowTrafChart',TRAF_MED,'n','wow-traf-legend');
 
   // 18. CVR Trend + sessions
   (()=>{
@@ -1346,26 +1388,26 @@ function initCharts(){
     new Chart(ctx,{type:'doughnut',data:{labels:['Subscribed','Unsubscribed','Not Subscribed'],datasets:[{data:[280235,171493,24499],backgroundColor:['rgba(0,229,160,0.85)','rgba(255,77,109,0.75)','rgba(59,158,255,0.6)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)}`;}}},cutout:'60%'}}});
   })();
 
-  // 20. Fulfillment donut
+  // 20. Email list growth (cumulative nc)
   (()=>{
-    const ctx=document.getElementById('fulfillChart').getContext('2d');
-    new Chart(ctx,{type:'doughnut',data:{labels:['Fulfilled'],datasets:[{data:[462190],backgroundColor:['rgba(0,229,160,0.85)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)}`;}}},cutout:'60%'}}});
+    const ctx=document.getElementById('emailGrowthChart').getContext('2d');
+    let cum=0;
+    const growthData=MD.map(d=>(cum+=d.nc,cum));
+    const gG=ctx.createLinearGradient(0,0,0,180);gG.addColorStop(0,'rgba(0,229,160,0.22)');gG.addColorStop(1,'rgba(0,229,160,0)');
+    new Chart(ctx,{type:'line',data:{labels:MD.map(d=>d.m.slice(2,7)),datasets:[{label:'Total List',data:growthData,borderColor:C.green,backgroundColor:gG,borderWidth:2,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` List size: ${fmtN(c.parsed.y)}`;}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:10,maxRotation:0}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}}});
   })();
 
-  // 21. Cancellation bar
+  // 21. Email new subscribers vs estimated unsubscribes
   (()=>{
-    const ctx=document.getElementById('cancelChart').getContext('2d');
-    new Chart(ctx,{type:'bar',data:{labels:['Skio Subs','Online Store','Transporter','Recharge','Bundler','Shop'],datasets:[{label:'Net Revenue',data:[14786000,12304000,849000,457000,225000,143000],backgroundColor:PAL.slice(0,6).map(c=>c+'bb'),borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${fmtK(c.parsed.x)}`;}}}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtK(v)}},y:{grid:{display:false}}}}});
-  })();
-
-  // 22. Health trend (returns/discounts %)
-  (()=>{
-    const ctx=document.getElementById('healthTrendChart').getContext('2d');
-    const rec=MD.filter(d=>d.m>='2023-06'&&d.g>100000);
-    new Chart(ctx,{type:'line',data:{labels:rec.map(d=>d.m.slice(2,7)),datasets:[
-      {label:'Returns %',data:rec.map(d=>+(d.r/d.g*100).toFixed(2)),borderColor:C.rose,backgroundColor:'rgba(255,77,109,0.1)',borderWidth:2,pointRadius:0,fill:true,tension:0.3},
-      {label:'Discounts %',data:rec.map(d=>+(Math.abs(d.d)/d.g*100).toFixed(2)),borderColor:C.amber,backgroundColor:'rgba(255,179,71,0.1)',borderWidth:2,pointRadius:0,fill:true,tension:0.3},
-    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.dataset.label}: ${c.parsed.y.toFixed(2)}%`;}}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:12,maxRotation:0}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>v+'%'}}}}});
+    const ctx=document.getElementById('emailTrendChart').getContext('2d');
+    const rec=MD.filter(d=>d.m>='2023-01');
+    // Estimated unsubscribes: ~15% of new contacts + ~1% monthly churn on existing list
+    let cumList=MD.filter(d=>d.m<'2023-01').reduce((s,d)=>s+d.nc,0);
+    const unsubs=rec.map(d=>{const u=Math.round(d.nc*0.12+cumList*0.008);cumList+=d.nc;return u;});
+    new Chart(ctx,{type:'bar',data:{labels:rec.map(d=>d.m.slice(2,7)),datasets:[
+      {label:'New Contacts',data:rec.map(d=>d.nc),backgroundColor:'rgba(0,229,160,0.7)',borderRadius:2,borderSkipped:false},
+      {label:'Est. Unsubscribes',data:unsubs,backgroundColor:'rgba(255,77,109,0.6)',borderRadius:2,borderSkipped:false},
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.dataset.label}: ${fmtN(c.parsed.y)}`;}}},scales:{x:{grid:{display:false},ticks:{maxRotation:0,maxTicksLimit:14}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}}});
   })();
 
   // Store baselines for country scaling
