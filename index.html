@@ -817,9 +817,9 @@ const _wfS=[48901,42773,35492,40085,23766,23764,28529,35513,42895,37566,41354,38
 // Per-channel weekly CVR (total, for Total CVR column in weekly table)
 const WK_CVR_TOT=[3.11,2.89,3.51,3.16,3.23,3.38,3.04,3.06,3.10,2.93,2.67,2.84,2.58,3.32,3.23,3.95,3.32,3.59,3.46,2.95,2.76,2.65,2.90,2.94,2.62,2.30,2.40,2.25,2.11,2.02];
 const TRAF_MED=(()=>{
-  // Use FUNNEL_CHAN actual session proportions (not revenue — avoids renewal-order bias)
-  const FC=FUNNEL_CHAN, FT=FC.all.sessions;
-  const sh={paid:FC.paid.sessions/FT, email:FC.email.sessions/FT, sms:FC.sms.sessions/FT, flow:FC.flow.sessions/FT};
+  // Session shares from FUNNEL_CHAN measured data (paid:2085000, email:142000, sms:83000, flow:211000, all:4297348)
+  // Inlined to avoid forward-reference to FUNNEL_CHAN which is declared below
+  const sh={paid:0.4852,email:0.03304,sms:0.01932,flow:0.04910};
   sh.none=1-sh.paid-sh.email-sh.sms-sh.flow;
   const result={};
   ['paid','email','sms','flow','none'].forEach(m=>{result[m]=_wfS.map(s=>Math.round(s*sh[m]));});
