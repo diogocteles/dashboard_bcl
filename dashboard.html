@@ -192,6 +192,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 .auth-box.shake{animation:shake .35s ease}
 @keyframes auth-fade{to{opacity:0;pointer-events:none}}
+.global-chip{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.3px;padding:2px 8px;border-radius:100px;border:1px solid var(--border-b);color:var(--dim);background:rgba(255,255,255,0.02);margin-top:6px;white-space:nowrap}
 #auth-gate.fade-out{animation:auth-fade .5s ease forwards}
 </style>
 </head>
@@ -314,7 +315,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <div class="cleg"><div class="leg-i"><div class="leg-d" style="background:#ff4d6d"></div>Returns</div><div class="leg-i"><div class="leg-d" style="background:#ffb347"></div>Discounts</div></div>
     </div>
     <div class="card">
-      <div class="card-h"><div><div class="card-title">Revenue Quality Metrics</div><div class="card-sub">All-time totals</div></div></div>
+      <div class="card-h"><div><div class="card-title">Revenue Quality Metrics</div><div class="card-sub">All-time totals</div><span class="global-chip">🌍 Global · not filtered by country</span></div></div>
       <div class="sr"><span class="sn">Gross Sales</span><span class="sv" style="color:var(--green)">$29,152,863</span></div>
       <div class="sr"><span class="sn">Net Sales</span><span class="sv">$26,929,950</span></div>
       <div class="sr"><span class="sn">Total Discounts</span><span class="sv" style="color:var(--amber)">−$1,273,035</span></div>
@@ -397,7 +398,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <!-- WoW CVR by Medium -->
   <div class="card mb14">
     <div class="card-h">
-      <div><div class="card-title">Weekly CVR Trend by UTM Medium</div><div class="card-sub">Jul 2025 – Feb 2026 · sessions with min 20/week shown</div></div>
+      <div><div class="card-title">Weekly CVR Trend by UTM Medium</div><div class="card-sub">Jul 2025 – Feb 2026 · sessions with min 20/week shown</div><span class="global-chip">🌍 Global · not filtered by country</span></div>
       <div class="ftabs" id="med-tabs">
         <button class="ftab active" onclick="filterMedChart('ALL',this)">All</button>
         <button class="ftab" onclick="filterMedChart('paid',this)">Paid</button>
@@ -414,7 +415,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <!-- WoW Revenue by Medium -->
   <div class="card mb14">
     <div class="card-h">
-      <div><div class="card-title">Weekly Revenue Trend by UTM Medium</div><div class="card-sub">Jul 2025 – Feb 2026 · from orders data</div></div>
+      <div><div class="card-title">Weekly Revenue Trend by UTM Medium</div><div class="card-sub">Jul 2025 – Feb 2026 · from orders data</div><span class="global-chip">🌍 Global · not filtered by country</span></div>
       <div class="ftabs" id="rev-med-tabs">
         <button class="ftab active" onclick="filterRevMedChart('ALL',this)">All</button>
         <button class="ftab" onclick="filterRevMedChart('paid',this)">Paid</button>
@@ -431,7 +432,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <!-- Weekly Traffic by Medium -->
   <div class="card mb14">
     <div class="card-h">
-      <div><div class="card-title">Weekly Traffic by Medium</div><div class="card-sub">Jul 2025 – Feb 2026 · estimated sessions by UTM medium</div></div>
+      <div><div class="card-title">Weekly Traffic by Medium</div><div class="card-sub">Jul 2025 – Feb 2026 · estimated sessions by UTM medium</div><span class="global-chip">🌍 Global · not filtered by country</span></div>
       <div class="ftabs" id="traf-tabs">
         <button class="ftab active" onclick="filterTrafChart('ALL',this)">All</button>
         <button class="ftab" onclick="filterTrafChart('paid',this)">Paid</button>
@@ -448,7 +449,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <!-- Campaigns Table -->
   <div class="card">
     <div class="card-h">
-      <div><div class="card-title">Top Performing Campaigns</div><div class="card-sub">Meaningful campaigns only (≥300 sessions) · sorted by completed checkouts · click header to sort</div></div>
+      <div><div class="card-title">Top Performing Campaigns</div><div class="card-sub">Meaningful campaigns only (≥300 sessions) · sorted by completed checkouts · click header to sort</div><span class="global-chip">🌍 Global · not filtered by country</span></div>
       <div class="mtog">
         <button class="mtog-btn active" onclick="switchCampView('volume',this)">By Volume</button>
         <button class="mtog-btn" onclick="switchCampView('cvr',this)">By CVR</button>
@@ -526,7 +527,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
   <div class="card mb14">
     <div class="card-h">
-      <div><div class="card-title">Overall Conversion Funnel</div><div class="card-sub" id="funnel-sub">All channels · Feb 2024 – Feb 2026</div></div>
+      <div><div class="card-title">Overall Conversion Funnel</div><div class="card-sub" id="funnel-sub">All channels · Feb 2024 – Feb 2026</div><span class="global-chip">🌍 Global · not filtered by country</span></div>
       <div class="mtog" id="funnel-channel-tog">
         <button class="mtog-btn active" onclick="switchFunnelChannel('all',this)">All</button>
         <button class="mtog-btn" onclick="switchFunnelChannel('paid',this)">Paid</button>
@@ -548,7 +549,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
   </div>
   <div class="card">
-    <div class="card-h"><div><div class="card-title">Weekly CVR Trend + Session Volume</div><div class="card-sub">Last 30 weeks · Jul 2025 – Feb 2026</div></div><span class="tag-sm r">↓ −35% from peak to Feb 2026</span></div>
+    <div class="card-h"><div><div class="card-title">Weekly CVR Trend + Session Volume</div><div class="card-sub">Last 30 weeks · Jul 2025 – Feb 2026</div><span class="global-chip">🌍 Global · not filtered by country</span></div><span class="tag-sm r">↓ −35% from peak to Feb 2026</span></div>
     <div style="height:210px;position:relative"><canvas id="cvrTrendChart"></canvas></div>
   </div>
 </section>
@@ -572,7 +573,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
   <div class="g2 mb14">
     <div class="card">
-      <div class="card-h"><div><div class="card-title">Email List Status</div><div class="card-sub">Subscriber breakdown · all customers</div></div></div>
+      <div class="card-h"><div><div class="card-title">Email List Status</div><div class="card-sub">Subscriber breakdown · all customers</div><span class="global-chip">🌍 Global · not filtered by country</span></div></div>
       <div style="height:180px;position:relative"><canvas id="emailChart"></canvas></div>
       <div class="sr"><span class="sn">Subscribed</span><span class="sv" style="color:var(--green)">277,357</span></div>
       <div class="sr"><span class="sn">Unsubscribed</span><span class="sv" style="color:var(--rose)">212,377</span></div>
