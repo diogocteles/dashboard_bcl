@@ -193,6 +193,23 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .auth-box.shake{animation:shake .35s ease}
 @keyframes auth-fade{to{opacity:0;pointer-events:none}}
 .global-chip{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.3px;padding:2px 8px;border-radius:100px;border:1px solid var(--border-b);color:var(--dim);background:rgba(255,255,255,0.02);margin-top:6px;white-space:nowrap}
+.wt-wrap{overflow-x:auto;overflow-y:auto;max-height:460px;border-radius:8px;border:1px solid var(--border-b)}
+.wt-tbl{border-collapse:collapse;font-size:11px;font-family:'DM Mono',monospace;white-space:nowrap;width:100%}
+.wt-tbl thead tr:first-child th{position:sticky;top:0;z-index:3;background:#0e1f1b;padding:7px 10px;border-bottom:1px solid var(--border-b);font-size:10px;letter-spacing:0.4px;color:var(--dim);text-align:center}
+.wt-tbl thead tr:nth-child(2) th{position:sticky;top:28px;z-index:3;background:#0c1b18;padding:5px 8px;border-bottom:2px solid var(--border-b);font-size:9px;color:rgba(255,255,255,0.3);text-align:right;letter-spacing:0.2px}
+.wt-tbl thead th.wt-sticky,.wt-tbl tbody td.wt-sticky{position:sticky;left:0;z-index:4;background:var(--card-bg)}
+.wt-tbl thead tr:first-child th.wt-sticky{z-index:5;background:#0e1f1b}
+.wt-tbl thead tr:nth-child(2) th.wt-sticky{z-index:5;background:#0c1b18;text-align:left}
+.wt-tbl tbody td{padding:5px 10px;border-bottom:1px solid rgba(255,255,255,0.025);text-align:right;color:var(--muted)}
+.wt-tbl tbody td.wt-sticky{color:var(--text);font-size:10px;padding-right:14px;border-right:1px solid var(--border-b);min-width:88px}
+.wt-tbl tbody td.wt-na{color:rgba(255,255,255,0.15);text-align:right}
+.wt-tbl tbody td.wt-rev{color:var(--green)}
+.wt-tbl .wt-grp-h{border-left:1px solid var(--border-b)}
+.wt-tbl .wt-grp-h.c-paid{color:#3b9eff} .wt-tbl .wt-grp-h.c-email{color:#a78bfa} .wt-tbl .wt-grp-h.c-sms{color:#34d399}
+.wt-tbl .wt-grp-h.c-flow{color:#fb923c} .wt-tbl .wt-grp-h.c-none{color:var(--dim)} .wt-tbl .wt-grp-h.c-total{color:var(--green)}
+.wt-tbl tbody td.wt-gl{border-left:1px solid rgba(255,255,255,0.04)}
+.wt-tbl tbody tr:hover td{background:rgba(255,255,255,0.02)}
+.wt-tbl tbody tr:hover td.wt-sticky{background:var(--card-bg)}
 #auth-gate.fade-out{animation:auth-fade .5s ease forwards}
 </style>
 </head>
@@ -444,6 +461,17 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
     <div style="height:220px;position:relative"><canvas id="wowTrafChart"></canvas></div>
     <div class="cleg" id="wow-traf-legend"></div>
+  </div>
+
+  <!-- Weekly Channel Metrics Table -->
+  <div class="card mb14">
+    <div class="card-h">
+      <div><div class="card-title">Weekly Channel Metrics</div><div class="card-sub">Aug 2024 – Feb 2026 · Traffic &amp; CVR: Jul 2025 onwards (Shopify analytics) · Orders &amp; Revenue: full 18 months (order data)</div><span class="global-chip">🌍 Global · not filtered by country</span></div>
+    </div>
+    <div class="wt-wrap"><table class="wt-tbl" id="weeklyTable"></table></div>
+    <div style="margin-top:8px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25);line-height:1.6">
+      Direct/None includes subscription renewal orders (no UTM tag). Traffic estimated from Shopify session share data. — = not available for that period.
+    </div>
   </div>
 
   <!-- Campaigns Table -->
@@ -784,13 +812,17 @@ const REV_MED={
   none:[225748,186829,198642,176182,96713,85925,89026,126640,158482,109069,91024,103753,106560,62616,53953,86569,104910,146554,68799,97363,96591,65205,84754,52601,41219,18317,23179,21190,12722,3246],
 };
 
-// ─── TRAFFIC BY MEDIUM (estimated sessions from REV_MED proportions × total sessions) ─
+// ─── TRAFFIC BY MEDIUM (session shares from FUNNEL_CHAN — measured Shopify analytics) ─
 const _wfS=[48901,42773,35492,40085,23766,23764,28529,35513,42895,37566,41354,38605,42071,25431,21333,29508,39600,49825,29758,45445,52534,50586,54996,38920,34355,37502,56612,56418,42149,14232];
+// Per-channel weekly CVR (total, for Total CVR column in weekly table)
+const WK_CVR_TOT=[3.11,2.89,3.51,3.16,3.23,3.38,3.04,3.06,3.10,2.93,2.67,2.84,2.58,3.32,3.23,3.95,3.32,3.59,3.46,2.95,2.76,2.65,2.90,2.94,2.62,2.30,2.40,2.25,2.11,2.02];
 const TRAF_MED=(()=>{
-  const meds=['paid','email','sms','flow','none'];
+  // Use FUNNEL_CHAN actual session proportions (not revenue — avoids renewal-order bias)
+  const FC=FUNNEL_CHAN, FT=FC.all.sessions;
+  const sh={paid:FC.paid.sessions/FT, email:FC.email.sessions/FT, sms:FC.sms.sessions/FT, flow:FC.flow.sessions/FT};
+  sh.none=1-sh.paid-sh.email-sh.sms-sh.flow;
   const result={};
-  const totals=WK.map((_,i)=>meds.reduce((s,m)=>s+(REV_MED[m]?.[i]||0),0));
-  meds.forEach(m=>{result[m]=WK.map((_,i)=>totals[i]>0?Math.round((REV_MED[m][i]||0)/totals[i]*_wfS[i]):0);});
+  ['paid','email','sms','flow','none'].forEach(m=>{result[m]=_wfS.map(s=>Math.round(s*sh[m]));});
   return result;
 })();
 
@@ -1168,6 +1200,57 @@ function filterMedChart(k,btn){filterChartByKey('wowMedChart',CVR_MED,k,'med-tab
 function filterRevMedChart(k,btn){filterChartByKey('wowRevMedChart',REV_MED,k,'rev-med-tabs',btn);}
 function filterTrafChart(k,btn){filterChartByKey('wowTrafChart',TRAF_MED,k,'traf-tabs',btn);}
 
+function buildWeeklyTable(){
+  const CHANS=['paid','email','sms','flow','none'];
+  const LABELS={paid:'Paid',email:'Email',sms:'SMS',flow:'Flow',none:'Direct / None'};
+  const COLORS={paid:'c-paid',email:'c-email',sms:'c-sms',flow:'c-flow',none:'c-none'};
+  // WK[0]='Jul 28' = 2025-07-28. WEEKLY_CHAN is most-recent-first; index 0=2026-02-16
+  // WEEKLY_CHAN[i] maps to WK[WK.length-1-i] for i in 0..WK.length-1, else no CVR/Traf
+  const WKL=WK.length; // 30
+  function wkIdx(wcI){return WKL-1-wcI;} // WK index for WEEKLY_CHAN position wcI
+
+  // ── header row 1: channel group labels ──
+  let h='<thead><tr>';
+  h+='<th class="wt-sticky" rowspan="2">Week</th>';
+  for(const c of CHANS) h+=`<th colspan="4" class="wt-grp-h ${COLORS[c]}">${LABELS[c]}</th>`;
+  h+='<th colspan="4" class="wt-grp-h c-total">Total</th>';
+  h+='</tr>';
+  // ── header row 2: metric sub-labels ──
+  h+='<tr>';
+  for(let g=0;g<CHANS.length+1;g++){
+    h+='<th class="wt-grp-h">Traffic</th><th>CVR%</th><th>Orders</th><th>Revenue</th>';
+  }
+  h+='</tr></thead><tbody>';
+
+  // ── data rows ──
+  WEEKLY_CHAN.forEach((w,i)=>{
+    const ki=wkIdx(i);
+    const hasCvrTraf=ki>=0&&ki<WKL;
+    h+=`<tr><td class="wt-sticky">${w.w}</td>`;
+    let sumO=0,sumR=0;
+    for(const c of CHANS){
+      const traf=hasCvrTraf?TRAF_MED[c]?.[ki]:null;
+      const cvr =hasCvrTraf?CVR_MED[c]?.[ki]:null;
+      const o=w[c].o, r=w[c].r;
+      sumO+=o; sumR+=r;
+      h+=`<td class="wt-gl${traf==null?' wt-na':''}">${traf!=null?fmtN(traf):'—'}</td>`;
+      h+=`<td class="${cvr==null?'wt-na':''}">${cvr!=null?cvr.toFixed(1)+'%':'—'}</td>`;
+      h+=`<td>${fmtN(o)}</td>`;
+      h+=`<td class="wt-rev">${fmtK(r)}</td>`;
+    }
+    // Total columns
+    const totS=hasCvrTraf?_wfS[ki]:null;
+    const totC=hasCvrTraf?WK_CVR_TOT[ki]:null;
+    h+=`<td class="wt-gl${totS==null?' wt-na':''}">${totS!=null?fmtN(totS):'—'}</td>`;
+    h+=`<td class="${totC==null?'wt-na':''}">${totC!=null?totC.toFixed(1)+'%':'—'}</td>`;
+    h+=`<td>${fmtN(sumO)}</td>`;
+    h+=`<td class="wt-rev">${fmtK(sumR)}</td>`;
+    h+='</tr>';
+  });
+  h+='</tbody>';
+  document.getElementById('weeklyTable').innerHTML=h;
+}
+
 // ─── CAMPAIGNS TABLE ──────────────────────────────────────────────────────────
 function switchCampView(type,btn){
   document.querySelectorAll('#attribution .mtog-btn').forEach(b=>b.classList.remove('active'));
@@ -1328,6 +1411,9 @@ function initCharts(){
 
   // 14b. Weekly Traffic by Medium
   buildWoWChart('wowTrafChart',TRAF_MED,'n','wow-traf-legend');
+
+  // 14c. Weekly channel metrics table
+  buildWeeklyTable();
 
   // 18. CVR Trend + sessions
   (()=>{

@@ -7,7 +7,7 @@ Reads 45 Shopify order export CSVs (real Shipping Country per order)
 """
 import csv, os, json, sys
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 ORDERS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Orders')
 OUTPUT_JS  = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data.js')
@@ -244,7 +244,72 @@ for c in CTRY_KEYS:
     t = country_totals[c]
     print(f"  {c}: gross=${t['gross']:,.0f}  orders={t['orders']:,}  sub={t['sub']:,}")
 
-# Step 9: Write data.js
+# Step 9: Weekly channel data (18 months, Aug 2024 – Feb 2026)
+print("\nBuilding weekly channel data...")
+UTM_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Orders by order name.csv')
+utm_by_name = {}
+if os.path.exists(UTM_FILE):
+    with open(UTM_FILE, encoding='utf-8-sig') as f:
+        for row in csv.DictReader(f):
+            name = (row.get('Order name') or '').strip()
+            med  = (row.get('Order UTM medium') or '').strip().lower()
+            if name:
+                utm_by_name[name] = med
+    print(f"  UTM lookup built: {len(utm_by_name):,} entries")
+else:
+    print("  WARNING: Orders by order name.csv not found, skipping weekly channel data")
+
+def classify_chan(med):
+    if med in ('paid', 'cpc', 'paidsocial', 'social paid'):
+        return 'paid'
+    if med == 'email':
+        return 'email'
+    if med in ('sms', 'text'):
+        return 'sms'
+    if med == 'flow':
+        return 'flow'
+    return 'none'
+
+CHAN_KEYS_W = ['paid', 'email', 'sms', 'flow', 'none']
+
+def week_monday(d):
+    return d - timedelta(days=d.weekday())
+
+WEEKLY_START_DATE = date(2024, 8, 5)
+WEEKLY_END_DATE   = date(2026, 2, 16)
+
+weekly_acc = defaultdict(lambda: {c: {'o': 0, 'r': 0} for c in CHAN_KEYS_W})
+
+for o in valid:
+    try:
+        d = date.fromisoformat(o['created'][:10])
+    except ValueError:
+        continue
+    if d < WEEKLY_START_DATE or d > WEEKLY_END_DATE + timedelta(days=6):
+        continue
+    ws = week_monday(d)
+    if ws < WEEKLY_START_DATE:
+        continue
+    chan = classify_chan(utm_by_name.get(o['name'], ''))
+    g    = o['subtotal'] + o['discount']
+    weekly_acc[ws][chan]['o'] += 1
+    weekly_acc[ws][chan]['r'] += g
+
+# Build sorted list (most-recent first)
+ws = WEEKLY_START_DATE
+all_weeks = []
+while ws <= WEEKLY_END_DATE:
+    entry = {'w': ws.isoformat()}
+    data  = weekly_acc.get(ws, {c: {'o': 0, 'r': 0} for c in CHAN_KEYS_W})
+    for c in CHAN_KEYS_W:
+        entry[c] = {'o': data[c]['o'], 'r': round(data[c]['r'])}
+    all_weeks.append(entry)
+    ws += timedelta(weeks=1)
+
+all_weeks.reverse()  # most-recent first
+print(f"  Weekly rows: {len(all_weeks)}")
+
+# Step 10: Write data.js
 def fmt_monthly(arr):
     parts = []
     for d in arr:
@@ -288,6 +353,11 @@ lines.append('const COUNTRY_TOTALS = {')
 for c in CTRY_KEYS:
     lines.append(f'  {c}: {json.dumps(country_totals[c])},')
 lines.append('};\n')
+
+lines.append('const WEEKLY_CHAN = [')
+for entry in all_weeks:
+    lines.append(f"  {json.dumps(entry)},")
+lines.append('];\n')
 
 with open(OUTPUT_JS, 'w') as f:
     f.write('\n'.join(lines))
