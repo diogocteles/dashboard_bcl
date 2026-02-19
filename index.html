@@ -499,7 +499,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
   </div>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
-    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)">Channel Filter</div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)">Channel Filter<span id="cohort-chan-note" style="display:none;text-transform:none;letter-spacing:0;margin-left:6px;opacity:0.5"> · absolute only</span></div>
     <div class="mtog" id="cohort-channel-tog">
       <button class="mtog-btn active" onclick="switchCohortChannel('all',this)">All</button>
       <button class="mtog-btn" onclick="switchCohortChannel('paid',this)">Paid</button>
@@ -957,7 +957,8 @@ function buildTimeCohort(){
   h+='</tr></thead><tbody>';
   months.forEach(month=>{
     const rawVals=data[month]||new Array(13).fill(0);
-    const vals=rawVals.map(v=>Math.round(v*scale));
+    // In pct mode use rawVals directly — scale cancels in division and rounding causes artifacts
+    const vals=cohortMode==='pct'?rawVals:rawVals.map(v=>Math.round(v*scale));
     const m0=vals[0]||1;
     const rowMax=Math.max(...vals.filter(v=>v>0));
     h+=`<tr><td>${month}</td>`;
@@ -1003,6 +1004,18 @@ function switchCohortMode(mode,btn){
   cohortMode=mode;
   document.querySelectorAll('#cohort-mode-tog .mtog-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
+  // Channel filter only meaningful in absolute mode (scale cancels in pct division)
+  const chanTog=document.getElementById('cohort-channel-tog');
+  const chanNote=document.getElementById('cohort-chan-note');
+  if(mode==='pct'){
+    chanTog.style.opacity='0.3';
+    chanTog.style.pointerEvents='none';
+    if(chanNote)chanNote.style.display='inline';
+  } else {
+    chanTog.style.opacity='';
+    chanTog.style.pointerEvents='';
+    if(chanNote)chanNote.style.display='none';
+  }
   buildTimeCohort();
 }
 
