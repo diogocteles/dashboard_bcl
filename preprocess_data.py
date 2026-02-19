@@ -309,7 +309,34 @@ while ws <= WEEKLY_END_DATE:
 all_weeks.reverse()  # most-recent first
 print(f"  Weekly rows: {len(all_weeks)}")
 
-# Step 10: Write data.js
+# Step 10: Weekly CVR + sessions by channel (from referrer source CSV, full range)
+print("\nBuilding weekly CVR / sessions by channel...")
+REF_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        'Conversion rate by referrer source - 2024-02-18 - 2026-02-18.csv')
+ref_agg = defaultdict(lambda: {'sess': 0, 'comp': 0})
+if os.path.exists(REF_FILE):
+    with open(REF_FILE, encoding='utf-8-sig') as f:
+        for row in csv.DictReader(f):
+            wk  = (row.get('Week') or '').strip()
+            utm = (row.get('UTM medium') or '').strip().lower()
+            chan = classify_chan(utm)
+            s = int(row.get('Sessions') or 0)
+            c = int(row.get('Sessions that completed checkout') or 0)
+            ref_agg[(wk, chan)]['sess'] += s
+            ref_agg[(wk, chan)]['comp'] += c
+    print(f"  Referrer CSV rows aggregated for {len({k[0] for k in ref_agg})} weeks")
+else:
+    print("  WARNING: Referrer source CSV not found, skipping")
+
+# Attach CVR + sessions to each weekly entry
+for entry in all_weeks:
+    w = entry['w']
+    for c in CHAN_KEYS_W:
+        d = ref_agg.get((w, c), {'sess': 0, 'comp': 0})
+        entry[c]['s'] = d['sess']
+        entry[c]['cvr'] = round(d['comp'] / d['sess'] * 100, 2) if d['sess'] > 0 else 0
+
+# Step 12: Write data.js
 def fmt_monthly(arr):
     parts = []
     for d in arr:

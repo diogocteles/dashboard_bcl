@@ -466,7 +466,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <!-- Weekly Channel Metrics Table -->
   <div class="card mb14">
     <div class="card-h">
-      <div><div class="card-title">Weekly Channel Metrics</div><div class="card-sub">Aug 2024 – Feb 2026 · Traffic &amp; CVR: Jul 2025 onwards (Shopify analytics) · Orders &amp; Revenue: full 18 months (order data)</div><span class="global-chip">🌍 Global · not filtered by country</span></div>
+      <div><div class="card-title">Weekly Channel Metrics</div><div class="card-sub">Aug 2024 – Feb 2026 · all 4 metrics for all 81 weeks · Traffic &amp; CVR from Shopify session analytics · Orders &amp; Revenue from order data</div><span class="global-chip">🌍 Global · not filtered by country</span></div>
     </div>
     <div class="wt-wrap"><table class="wt-tbl" id="weeklyTable"></table></div>
     <div style="margin-top:8px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25);line-height:1.6">
@@ -1204,10 +1204,6 @@ function buildWeeklyTable(){
   const CHANS=['paid','email','sms','flow','none'];
   const LABELS={paid:'Paid',email:'Email',sms:'SMS',flow:'Flow',none:'Direct / None'};
   const COLORS={paid:'c-paid',email:'c-email',sms:'c-sms',flow:'c-flow',none:'c-none'};
-  // WK[0]='Jul 28' = 2025-07-28. WEEKLY_CHAN is most-recent-first; index 0=2026-02-16
-  // WEEKLY_CHAN[i] maps to WK[WK.length-1-i] for i in 0..WK.length-1, else no CVR/Traf
-  const WKL=WK.length; // 30
-  function wkIdx(wcI){return WKL-1-wcI;} // WK index for WEEKLY_CHAN position wcI
 
   // ── header row 1: channel group labels ──
   let h='<thead><tr>';
@@ -1222,27 +1218,24 @@ function buildWeeklyTable(){
   }
   h+='</tr></thead><tbody>';
 
-  // ── data rows ──
-  WEEKLY_CHAN.forEach((w,i)=>{
-    const ki=wkIdx(i);
-    const hasCvrTraf=ki>=0&&ki<WKL;
+  // ── data rows — sessions & CVR come from WEEKLY_CHAN[c].s/.cvr (referrer CSV data) ──
+  WEEKLY_CHAN.forEach(w=>{
     h+=`<tr><td class="wt-sticky">${w.w}</td>`;
-    let sumO=0,sumR=0;
+    let sumO=0,sumR=0,sumS=0;
     for(const c of CHANS){
-      const traf=hasCvrTraf?TRAF_MED[c]?.[ki]:null;
-      const cvr =hasCvrTraf?CVR_MED[c]?.[ki]:null;
+      const s=w[c].s||0, cvr=w[c].cvr||0;
       const o=w[c].o, r=w[c].r;
-      sumO+=o; sumR+=r;
-      h+=`<td class="wt-gl${traf==null?' wt-na':''}">${traf!=null?fmtN(traf):'—'}</td>`;
-      h+=`<td class="${cvr==null?'wt-na':''}">${cvr!=null?cvr.toFixed(1)+'%':'—'}</td>`;
+      sumO+=o; sumR+=r; sumS+=s;
+      const noData=s===0;
+      h+=`<td class="wt-gl${noData?' wt-na':''}">${noData?'—':fmtN(s)}</td>`;
+      h+=`<td class="${noData?'wt-na':''}">${noData?'—':cvr.toFixed(1)+'%'}</td>`;
       h+=`<td>${fmtN(o)}</td>`;
       h+=`<td class="wt-rev">${fmtK(r)}</td>`;
     }
-    // Total columns
-    const totS=hasCvrTraf?_wfS[ki]:null;
-    const totC=hasCvrTraf?WK_CVR_TOT[ki]:null;
-    h+=`<td class="wt-gl${totS==null?' wt-na':''}">${totS!=null?fmtN(totS):'—'}</td>`;
-    h+=`<td class="${totC==null?'wt-na':''}">${totC!=null?totC.toFixed(1)+'%':'—'}</td>`;
+    // Total columns: sum sessions across channels, weighted-avg CVR
+    const totCvr=sumS>0?CHANS.reduce((s,c)=>(w[c].s||0)*(w[c].cvr||0)+s,0)/sumS:0;
+    h+=`<td class="wt-gl${sumS===0?' wt-na':''}">${sumS?fmtN(sumS):'—'}</td>`;
+    h+=`<td class="${sumS===0?'wt-na':''}">${sumS?totCvr.toFixed(1)+'%':'—'}</td>`;
     h+=`<td>${fmtN(sumO)}</td>`;
     h+=`<td class="wt-rev">${fmtK(sumR)}</td>`;
     h+='</tr>';
@@ -1313,11 +1306,11 @@ function buildWoWChart(canvasId,dataMap,yFmt,legendId){
       responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{
-        label(c){const v=c.parsed.y;return` ${c.dataset.label}: ${yFmt==='%'?v.toFixed(2)+'%':fmtK(v)}`;}
+        label(c){const v=c.parsed.y;return` ${c.dataset.label}: ${yFmt==='%'?v.toFixed(2)+'%':yFmt==='n'?fmtN(v):fmtK(v)}`;}
       }}},
       scales:{
         x:{grid:{display:false},ticks:{maxTicksLimit:10,maxRotation:0}},
-        y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>yFmt==='%'?v+'%':fmtK(v)}}
+        y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>yFmt==='%'?v+'%':yFmt==='n'?fmtN(v):fmtK(v)}}
       }
     }
   });
