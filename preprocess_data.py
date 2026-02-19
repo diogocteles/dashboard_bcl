@@ -55,6 +55,10 @@ for fn in files:
             name = (row.get('Name') or '').strip()
             if not name or name in orders:
                 continue
+            # Skip bulk-imported historical orders (_E suffix = external system migration,
+            # all stamped 2023-02-01 with wrong dates — causes false Feb 2023 spike)
+            if '_E' in name:
+                continue
             tags = (row.get('Tags') or '').strip()
             country_raw = (row.get('Shipping Country') or '').strip().upper()
             ctry = country_raw if country_raw in ('US', 'GB', 'DE', 'NL', 'CA') else 'OTHER'
