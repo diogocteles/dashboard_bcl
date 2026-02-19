@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="data.js"></script>
 <style>
 :root{
   --bg:#080e1a;--surface:#0f1929;--card:#131f30;--card-h:#182538;
@@ -754,23 +755,9 @@ const MD=[
   {m:'2026-02',g:572713,n:547366,o:6780,nc:2262,rc:4518,d:15508,r:9839,sub:3886,ot:2894}
 ];
 
-// ─── COUNTRY DATA ────────────────────────────────────────────────────────────
-const COUNTRIES={
-  ALL:{flag:'🌍',name:'All 5 Markets',orders:462190,gross:29152863,net:26929950,nc:187902,rc:274288,aov:66.75,rr:57.0,dr:4.37,rtr:3.26,sub:431138,ot:5629},
-  US:{flag:'🇺🇸',name:'United States',orders:432811,gross:27117976,net:25090924,nc:175726,rc:257085,aov:62.65,rr:57.0,dr:4.26,rtr:3.22,sub:401059,ot:5238},
-  GB:{flag:'🇬🇧',name:'United Kingdom',orders:14515,gross:878184,net:787879,nc:2206,rc:12309,aov:60.50,rr:84.8,dr:5.17,rtr:5.11,sub:13977,ot:538},
-  DE:{flag:'🇩🇪',name:'Germany',orders:1866,gross:142631,net:132680,nc:392,rc:1474,aov:76.44,rr:79.0,dr:5.04,rtr:1.93,sub:1793,ot:73},
-  NL:{flag:'🇳🇱',name:'Netherlands',orders:1883,gross:129792,net:120136,nc:341,rc:1542,aov:68.93,rr:81.9,dr:5.64,rtr:1.80,sub:1808,ot:75},
-  CA:{flag:'🇨🇦',name:'Canada',orders:1370,gross:135095,net:117311,nc:332,rc:1038,aov:98.61,rr:75.8,dr:8.44,rtr:4.73,sub:1316,ot:54},
-};
+// ─── COUNTRY DATA (from data.js) ────────────────────────────────────────────
+const COUNTRIES=COUNTRY_TOTALS; // alias – COUNTRY_TOTALS loaded from data.js
 
-const CURR_MONTHLY={
-  'US':[2632,4765,13501,24552,50439,56138,45760,40894,41825,59826,45091,42993,97437,91413,90417,120701,161644,97555,67458,48505,44178,51874,78033,82560,64157,98296,95228,80662,74528,75316,73460,98062,123573,108350,102022,56927,91846,113754,126825,155969,186648,201322,227812,229474,385194,332527,460505,404351,506575,556104,533854,444982,520781,952145,1200739,1414582,1343273,727811,914669,1078250,1159176,1036358,1054114,975391,1039801,1005217,895510,899295,971993,981439,946177,532737],
-  'GB':[85,154,437,795,1633,1818,1482,1324,1354,1937,1460,1392,3155,2960,2928,3909,5235,3159,2185,1571,1431,1680,2527,2674,2078,3183,3084,2612,2413,2439,2379,3176,4002,3509,3304,1844,2974,3684,4107,5051,6044,6520,7377,7431,12474,10768,14913,13094,16405,18009,17288,14410,16865,30834,38885,45810,43500,23569,29620,34918,37539,33561,34136,31587,33673,32553,29000,29123,31477,31783,30641,17252],
-  'DE':[14,25,71,129,265,295,241,215,220,315,237,226,512,481,476,635,850,513,355,255,232,273,410,434,337,517,501,424,392,396,386,516,650,570,537,299,483,598,667,820,982,1059,1198,1207,2026,1749,2422,2127,2664,2925,2808,2340,2739,5008,6315,7440,7065,3828,4811,5671,6097,5451,5544,5130,5469,5287,4710,4730,5112,5162,4977,2802],
-  'NL':[13,23,65,118,241,269,219,196,200,286,216,206,466,438,433,578,774,467,323,232,211,248,373,395,307,470,456,386,357,360,352,469,591,519,488,272,440,544,607,747,893,964,1090,1098,1844,1592,2204,1935,2425,2662,2555,2130,2493,4557,5747,6770,6429,3483,4378,5161,5548,4960,5045,4668,4977,4811,4286,4304,4652,4697,4529,2550],
-  'CA':[13,24,67,122,251,280,228,204,208,298,225,214,485,455,450,601,805,486,336,242,220,258,389,411,320,490,474,402,371,375,366,489,616,540,508,284,458,567,632,777,930,1003,1135,1143,1919,1657,2294,2014,2524,2770,2660,2217,2594,4743,5982,7047,6692,3626,4557,5372,5775,5163,5251,4859,5180,5008,4461,4480,4842,4889,4714,2654]
-};
 
 // ─── WEEKLY WoW DATA ─────────────────────────────────────────────────────────
 const WK=['Jul 28','Aug 04','Aug 11','Aug 18','Aug 25','Sep 01','Sep 08','Sep 15','Sep 22','Sep 29','Oct 06','Oct 13','Oct 20','Oct 27','Nov 03','Nov 10','Nov 17','Nov 24','Dec 01','Dec 08','Dec 15','Dec 22','Dec 29','Jan 05','Jan 12','Jan 19','Jan 26','Feb 02','Feb 09','Feb 16'];
@@ -961,7 +948,7 @@ function heatColor(val,rowMax,type='revenue'){
 }
 
 function buildTimeCohort(){
-  const data=cohortMetric==='revenue'?COHORT_TIME_REV:COHORT_TIME_ORD;
+  const data=cohortMetric==='revenue'?(COUNTRY_COHORT_REV[activeCountry]||COUNTRY_COHORT_REV.ALL):(COUNTRY_COHORT_ORD[activeCountry]||COUNTRY_COHORT_ORD.ALL);
   const months=COHORT_MONTHS;
   const scale=COHORT_CHAN[cohortChannel]||1;
   let h='<thead><tr><th>Cohort</th>';
@@ -1086,95 +1073,52 @@ function setCountry(c){
 function updateRevenueChart(c){
   const chart=Chart.getChart('revenueChart');
   if(!chart)return;
-  if(c==='ALL'||!CURR_MONTHLY[c]){
-    chart.data.labels=MD.map(d=>d.m.slice(2,7));
-    chart.data.datasets[0].data=MD.map(d=>d.g);
-    chart.data.datasets[1].data=MD.map(d=>d.n);
+  const md=COUNTRY_MONTHLY[c]||COUNTRY_MONTHLY.ALL;
+  chart.data.labels=md.map(d=>d.m.slice(2,7));
+  chart.data.datasets[0].data=md.map(d=>d.g);
+  chart.data.datasets[1].data=md.map(d=>d.n);
+  if(c==='ALL'){
     document.getElementById('rev-chart-sub').textContent='Full history · Mar 2020 – Feb 2026 · 5 markets';
   } else {
-    const arr=CURR_MONTHLY[c];
-    chart.data.labels=MD.map(d=>d.m.slice(2,7));
-    chart.data.datasets[0].data=arr;
-    chart.data.datasets[1].data=arr.map(g=>Math.round(g*0.93));
-    document.getElementById('rev-chart-sub').textContent=COUNTRIES[c].flag+' '+COUNTRIES[c].name+' · Mar 2020 – Feb 2026';
+    const t=COUNTRY_TOTALS[c];
+    document.getElementById('rev-chart-sub').textContent=t.flag+' '+t.name+' · Mar 2020 – Feb 2026';
   }
   chart.update();
 }
 
-// ─── CHART BASELINES + COUNTRY SCALING ───────────────────────────────────────
-const CHART_BASE={};
-
-function storeAllBaselines(){
-  ['discReturnsChart','custChart','ordVolChart','aovChart','subMixChart','subDonutChart',
-   'subRetChart','cvrTrendChart','wowRevMedChart',
-   'emailChart','emailGrowthChart','emailTrendChart'
-  ].forEach(id=>{
-    const c=Chart.getChart(id);
-    if(c) CHART_BASE[id]=c.data.datasets.map(ds=>[...ds.data]);
-  });
-}
-
+// ─── COUNTRY CHART UPDATE (data-driven) ──────────────────────────────────────
 function updateAllCharts(country){
-  const d=COUNTRIES[country];
-  const all=COUNTRIES.ALL;
-  const revRatio=d.gross/all.gross;
-  const ordRatio=d.orders/all.orders;
+  const md=COUNTRY_MONTHLY[country]||COUNTRY_MONTHLY.ALL;
+  const rec=md.filter(d=>d.m>='2023-01');
 
-  // Restore ALL baselines first
-  Object.keys(CHART_BASE).forEach(id=>{
-    const chart=Chart.getChart(id);
-    if(!chart||!CHART_BASE[id]) return;
-    chart.data.datasets.forEach((ds,i)=>{
-      if(CHART_BASE[id][i]) ds.data=[...CHART_BASE[id][i]];
-    });
-  });
+  const drc=Chart.getChart('discReturnsChart');
+  if(drc){drc.data.labels=rec.map(d=>d.m.slice(2,7));drc.data.datasets[0].data=rec.map(d=>d.r);drc.data.datasets[1].data=rec.map(d=>d.d);drc.update();}
 
-  if(country!=='ALL'){
-    // Scale revenue-amount charts
-    ['discReturnsChart','wowRevMedChart'].forEach(id=>{
-      const chart=Chart.getChart(id);
-      if(!chart||!CHART_BASE[id]) return;
-      chart.data.datasets.forEach((ds,i)=>{
-        ds.data=CHART_BASE[id][i].map(v=>Math.round(v*revRatio));
-      });
-    });
-    // Scale order/customer count charts
-    ['custChart','ordVolChart','subMixChart','subRetChart',
-     'emailChart','emailGrowthChart','emailTrendChart'].forEach(id=>{
-      const chart=Chart.getChart(id);
-      if(!chart||!CHART_BASE[id]) return;
-      chart.data.datasets.forEach((ds,i)=>{
-        ds.data=CHART_BASE[id][i].map(v=>Math.round(v*ordRatio));
-      });
-    });
-    // AOV: scale by country aov ratio (country aov / ALL aov)
-    const aovC=Chart.getChart('aovChart');
-    if(aovC&&CHART_BASE['aovChart']){
-      const aovRatio=d.aov/all.aov;
-      aovC.data.datasets[0].data=CHART_BASE['aovChart'][0].map(v=>+(v*aovRatio).toFixed(2));
-    }
-    // CVR trend: keep CVR, scale sessions
-    const cvrC=Chart.getChart('cvrTrendChart');
-    if(cvrC&&CHART_BASE['cvrTrendChart']){
-      cvrC.data.datasets[0].data=[...CHART_BASE['cvrTrendChart'][0]];
-      cvrC.data.datasets[1].data=CHART_BASE['cvrTrendChart'][1].map(v=>Math.round(v*ordRatio));
-    }
-  }
+  const cc=Chart.getChart('custChart');
+  if(cc){cc.data.labels=rec.map(d=>d.m.slice(2,7));cc.data.datasets[0].data=rec.map(d=>d.nc);cc.data.datasets[1].data=rec.map(d=>d.rc);cc.update();}
 
-  // Sub donut: use actual country sub/ot data
-  const subDonut=Chart.getChart('subDonutChart');
-  if(subDonut){
-    subDonut.data.datasets[0].data=[d.sub,d.ot];
-    subDonut.update();
-  }
+  const ovc=Chart.getChart('ordVolChart');
+  if(ovc){ovc.data.labels=rec.map(d=>d.m.slice(2,7));ovc.data.datasets[0].data=rec.map(d=>d.o);ovc.update();}
 
-  // Update all scaled charts
-  ['discReturnsChart','custChart','ordVolChart','aovChart','subMixChart','subRetChart',
-   'cvrTrendChart','wowRevMedChart',
-   'emailChart','emailGrowthChart','emailTrendChart'].forEach(id=>{
-    const chart=Chart.getChart(id);
-    if(chart) chart.update();
-  });
+  const aovc=Chart.getChart('aovChart');
+  if(aovc){const f=rec.filter(d=>d.o>10);aovc.data.labels=f.map(d=>d.m.slice(2,7));aovc.data.datasets[0].data=f.map(d=>+(d.g/d.o).toFixed(2));aovc.update();}
+
+  const smc=Chart.getChart('subMixChart');
+  if(smc){smc.data.labels=rec.map(d=>d.m.slice(2,7));smc.data.datasets[0].data=rec.map(d=>d.nc);smc.data.datasets[1].data=rec.map(d=>d.rc);smc.update();}
+
+  const sdc=Chart.getChart('subDonutChart');
+  if(sdc){const sd=COUNTRY_SUB_DONUT[country]||COUNTRY_SUB_DONUT.ALL;sdc.data.datasets[0].data=[sd.sub,sd.ot];sdc.update();}
+
+  const src=Chart.getChart('subRetChart');
+  if(src){src.data.datasets[0].data=[...(COUNTRY_SUB_RET[country]||COUNTRY_SUB_RET.ALL)];src.update();}
+
+  const egc=Chart.getChart('emailGrowthChart');
+  if(egc){let cum=0;const g=md.map(d=>(cum+=d.nc,cum));egc.data.labels=md.map(d=>d.m.slice(2,7));egc.data.datasets[0].data=g;egc.update();}
+
+  const etc=Chart.getChart('emailTrendChart');
+  if(etc){let cl=md.filter(d=>d.m<'2023-01').reduce((s,d)=>s+d.nc,0);const u=rec.map(d=>{const v=Math.round(d.nc*0.12+cl*0.008);cl+=d.nc;return v;});etc.data.labels=rec.map(d=>d.m.slice(2,7));etc.data.datasets[0].data=rec.map(d=>d.nc);etc.data.datasets[1].data=u;etc.update();}
+
+  buildTimeCohort();
 }
 
 // ─── BUILD COUNTRY CARDS ──────────────────────────────────────────────────────
@@ -1297,16 +1241,16 @@ function initCharts(){
     const ctx=document.getElementById('revenueChart').getContext('2d');
     const gG=ctx.createLinearGradient(0,0,0,260);gG.addColorStop(0,'rgba(0,229,160,0.22)');gG.addColorStop(1,'rgba(0,229,160,0)');
     const gB=ctx.createLinearGradient(0,0,0,260);gB.addColorStop(0,'rgba(59,158,255,0.18)');gB.addColorStop(1,'rgba(59,158,255,0)');
-    new Chart(ctx,{type:'line',data:{labels:MD.map(d=>d.m.slice(2,7)),datasets:[
-      {label:'Gross',data:MD.map(d=>d.g),borderColor:C.green,backgroundColor:gG,borderWidth:2,pointRadius:0,fill:true,tension:0.3},
-      {label:'Net',data:MD.map(d=>d.n),borderColor:C.blue,backgroundColor:gB,borderWidth:2,pointRadius:0,fill:true,tension:0.3},
+    new Chart(ctx,{type:'line',data:{labels:COUNTRY_MONTHLY.ALL.map(d=>d.m.slice(2,7)),datasets:[
+      {label:'Gross',data:COUNTRY_MONTHLY.ALL.map(d=>d.g),borderColor:C.green,backgroundColor:gG,borderWidth:2,pointRadius:0,fill:true,tension:0.3},
+      {label:'Net',data:COUNTRY_MONTHLY.ALL.map(d=>d.n),borderColor:C.blue,backgroundColor:gB,borderWidth:2,pointRadius:0,fill:true,tension:0.3},
     ]},options:lineOpts('$')});
   })();
 
   // 2. Discounts & Returns
   (()=>{
     const ctx=document.getElementById('discReturnsChart').getContext('2d');
-    const rec=MD.filter(d=>d.m>='2023-01');
+    const rec=COUNTRY_MONTHLY.ALL.filter(d=>d.m>='2023-01');
     new Chart(ctx,{type:'line',data:{labels:rec.map(d=>d.m.slice(2,7)),datasets:[
       {label:'Returns',data:rec.map(d=>d.r),borderColor:C.rose,backgroundColor:'rgba(255,77,109,0.1)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
       {label:'Discounts',data:rec.map(d=>Math.abs(d.d)),borderColor:C.amber,backgroundColor:'rgba(255,179,71,0.1)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
@@ -1316,7 +1260,7 @@ function initCharts(){
   // 3. Customers stacked bar
   (()=>{
     const ctx=document.getElementById('custChart').getContext('2d');
-    const rec=MD.filter(d=>d.m>='2023-01');
+    const rec=COUNTRY_MONTHLY.ALL.filter(d=>d.m>='2023-01');
     new Chart(ctx,{type:'bar',data:{labels:rec.map(d=>d.m.slice(2,7)),datasets:[
       {label:'New',data:rec.map(d=>d.nc),backgroundColor:'rgba(0,229,160,0.75)',borderRadius:2,borderSkipped:false},
       {label:'Returning',data:rec.map(d=>d.rc),backgroundColor:'rgba(59,158,255,0.55)',borderRadius:2,borderSkipped:false},
@@ -1326,7 +1270,7 @@ function initCharts(){
   // 4. Order Volume
   (()=>{
     const ctx=document.getElementById('ordVolChart').getContext('2d');
-    const rec=MD.filter(d=>d.m>='2023-01');
+    const rec=COUNTRY_MONTHLY.ALL.filter(d=>d.m>='2023-01');
     const gP=ctx.createLinearGradient(0,0,0,200);gP.addColorStop(0,'rgba(167,139,250,0.28)');gP.addColorStop(1,'rgba(167,139,250,0.02)');
     new Chart(ctx,{type:'line',data:{labels:rec.map(d=>d.m.slice(2,7)),datasets:[{label:'Orders',data:rec.map(d=>d.o),borderColor:C.purple,backgroundColor:gP,borderWidth:2,pointRadius:0,fill:true,tension:0.3}]},options:lineOpts('')});
   })();
@@ -1334,7 +1278,7 @@ function initCharts(){
   // 5. AOV
   (()=>{
     const ctx=document.getElementById('aovChart').getContext('2d');
-    const rec=MD.filter(d=>d.m>='2023-01'&&d.o>100);
+    const rec=COUNTRY_MONTHLY.ALL.filter(d=>d.m>='2023-01'&&d.o>100);
     const gA=ctx.createLinearGradient(0,0,0,200);gA.addColorStop(0,'rgba(255,179,71,0.25)');gA.addColorStop(1,'rgba(255,179,71,0.02)');
     new Chart(ctx,{type:'line',data:{labels:rec.map(d=>d.m.slice(2,7)),datasets:[{label:'AOV',data:rec.map(d=>+(d.g/d.o).toFixed(2)),borderColor:C.amber,backgroundColor:gA,borderWidth:2,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` AOV: $${c.parsed.y.toFixed(2)}`;}}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:10,maxRotation:0}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>'$'+v},min:40}}}});
   })();
@@ -1342,7 +1286,7 @@ function initCharts(){
   // 6. Sub mix
   (()=>{
     const ctx=document.getElementById('subMixChart').getContext('2d');
-    const sdMD=MD.filter(d=>d.m>='2023-01');
+    const sdMD=COUNTRY_MONTHLY.ALL.filter(d=>d.m>='2023-01');
     new Chart(ctx,{type:'bar',data:{labels:sdMD.map(d=>d.m.slice(2,7)),datasets:[
       {label:'New',data:sdMD.map(d=>d.nc),backgroundColor:'rgba(0,229,160,0.75)',borderRadius:2,borderSkipped:false},
       {label:'Renewal',data:sdMD.map(d=>d.rc),backgroundColor:'rgba(59,158,255,0.45)',borderRadius:2,borderSkipped:false},
@@ -1352,13 +1296,13 @@ function initCharts(){
   // 7. Sub donut
   (()=>{
     const ctx=document.getElementById('subDonutChart').getContext('2d');
-    new Chart(ctx,{type:'doughnut',data:{labels:['Subscription','One-Time'],datasets:[{data:[431138,5629],backgroundColor:['rgba(0,229,160,0.85)','rgba(59,158,255,0.7)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)} orders`;}}},cutout:'65%'}}});
+    new Chart(ctx,{type:'doughnut',data:{labels:['Subscription','One-Time'],datasets:[{data:[COUNTRY_SUB_DONUT.ALL.sub,COUNTRY_SUB_DONUT.ALL.ot],backgroundColor:['rgba(0,229,160,0.85)','rgba(59,158,255,0.7)'],borderColor:['#0f1929'],borderWidth:3,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.label}: ${fmtN(c.parsed)} orders`;}}},cutout:'65%'}}});
   })();
 
   // 8. Sub retention
   (()=>{
     const ctx=document.getElementById('subRetChart').getContext('2d');
-    const vals=[177056,71813,42935,29009,20949,15805,12330,9833];
+    const vals=[...COUNTRY_SUB_RET.ALL];
     new Chart(ctx,{type:'bar',data:{labels:['1st','#2','#3','#4','#5','#6','#7','#8+'],datasets:[{label:'Orders',data:vals,backgroundColor:vals.map((_,i)=>`rgba(0,229,160,${0.9-i*0.1})`),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` Orders: ${fmtN(c.parsed.y)}`;}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}});
   })();
 
@@ -1392,17 +1336,17 @@ function initCharts(){
   (()=>{
     const ctx=document.getElementById('emailGrowthChart').getContext('2d');
     let cum=0;
-    const growthData=MD.map(d=>(cum+=d.nc,cum));
+    const growthData=COUNTRY_MONTHLY.ALL.map(d=>(cum+=d.nc,cum));
     const gG=ctx.createLinearGradient(0,0,0,180);gG.addColorStop(0,'rgba(0,229,160,0.22)');gG.addColorStop(1,'rgba(0,229,160,0)');
-    new Chart(ctx,{type:'line',data:{labels:MD.map(d=>d.m.slice(2,7)),datasets:[{label:'Total List',data:growthData,borderColor:C.green,backgroundColor:gG,borderWidth:2,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` List size: ${fmtN(c.parsed.y)}`;}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:10,maxRotation:0}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}}});
+    new Chart(ctx,{type:'line',data:{labels:COUNTRY_MONTHLY.ALL.map(d=>d.m.slice(2,7)),datasets:[{label:'Total List',data:growthData,borderColor:C.green,backgroundColor:gG,borderWidth:2,pointRadius:0,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` List size: ${fmtN(c.parsed.y)}`;}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:10,maxRotation:0}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}}});
   })();
 
   // 21. Email new subscribers vs estimated unsubscribes
   (()=>{
     const ctx=document.getElementById('emailTrendChart').getContext('2d');
-    const rec=MD.filter(d=>d.m>='2023-01');
+    const rec=COUNTRY_MONTHLY.ALL.filter(d=>d.m>='2023-01');
     // Estimated unsubscribes: ~15% of new contacts + ~1% monthly churn on existing list
-    let cumList=MD.filter(d=>d.m<'2023-01').reduce((s,d)=>s+d.nc,0);
+    let cumList=COUNTRY_MONTHLY.ALL.filter(d=>d.m<'2023-01').reduce((s,d)=>s+d.nc,0);
     const unsubs=rec.map(d=>{const u=Math.round(d.nc*0.12+cumList*0.008);cumList+=d.nc;return u;});
     new Chart(ctx,{type:'bar',data:{labels:rec.map(d=>d.m.slice(2,7)),datasets:[
       {label:'New Contacts',data:rec.map(d=>d.nc),backgroundColor:'rgba(0,229,160,0.7)',borderRadius:2,borderSkipped:false},
@@ -1410,8 +1354,6 @@ function initCharts(){
     ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.dataset.label}: ${fmtN(c.parsed.y)}`;}}},scales:{x:{grid:{display:false},ticks:{maxRotation:0,maxTicksLimit:14}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}}});
   })();
 
-  // Store baselines for country scaling
-  storeAllBaselines();
 }
 
 // ─── SCROLL SPY ───────────────────────────────────────────────────────────────
