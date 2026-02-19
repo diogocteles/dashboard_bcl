@@ -214,55 +214,6 @@ for c in CTRY_KEYS:
     country_cohort_rev[c] = {m: [round(v) for v in cohort_rev[c].get(m, [0.] * 13)] for m in COHORT_MONTHS}
     country_cohort_ord[c] = {m: list(cohort_ord[c].get(m, [0] * 13)) for m in COHORT_MONTHS}
 
-# Step 8a: Weekly revenue by medium per country (30-week WoW window)
-# Weeks: Jul 28 2024 – Feb 16 2025 (matching dashboard WK array)
-from datetime import date as _date
-WK_START  = _date(2024, 7, 28)
-N_WEEKS   = 30
-MEDIUMS   = ['paid', 'email', 'sms', 'flow', 'none']
-
-def _norm_med(utm):
-    u = (utm or '').strip().lower()
-    if u in ('paid', 'cpc', 'psm', 'paidsocial', 'social'): return 'paid'
-    if u == 'email': return 'email'
-    if u in ('sms', 'text'): return 'sms'
-    if u == 'flow': return 'flow'
-    return 'none'
-
-def _date_to_wk(dt_str):
-    try:
-        d = _date.fromisoformat(dt_str[:10])
-    except Exception:
-        return None
-    delta = (d - WK_START).days
-    return delta // 7 if 0 <= delta < N_WEEKS * 7 else None
-
-print("Loading UTM lookup from 'Orders by order name.csv'...")
-UTM_LOOKUP = {}
-_utm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Orders by order name.csv')
-with open(_utm_path, encoding='utf-8-sig') as _f:
-    for _row in csv.DictReader(_f):
-        _n = (_row.get('Order name') or '').strip()
-        if _n:
-            UTM_LOOKUP[_n] = _norm_med(_row.get('Order UTM medium'))
-
-print(f"  UTM entries: {len(UTM_LOOKUP):,}")
-
-weekly_rev = {c: {m: [0.] * N_WEEKS for m in MEDIUMS} for c in CTRY_KEYS}
-for o in valid:
-    wk = _date_to_wk(o['created'])
-    if wk is None:
-        continue
-    med = UTM_LOOKUP.get(o['name'], 'none')
-    g   = o['subtotal'] + o['discount']
-    for c in (['ALL'] + ([o['ctry']] if o['ctry'] != 'OTHER' else [])):
-        weekly_rev[c][med][wk] += g
-
-country_rev_med = {
-    c: {m: [round(weekly_rev[c][m][i]) for i in range(N_WEEKS)] for m in MEDIUMS}
-    for c in CTRY_KEYS
-}
-
 # Step 8: Country totals for KPI cards
 FLAGS = {'ALL': '🌍', 'US': '🇺🇸', 'GB': '🇬🇧', 'DE': '🇩🇪', 'NL': '🇳🇱', 'CA': '🇨🇦'}
 NAMES = {'ALL': 'All Markets', 'US': 'United States', 'GB': 'United Kingdom', 'DE': 'Germany', 'NL': 'Netherlands', 'CA': 'Canada'}
@@ -336,14 +287,6 @@ lines.append('};\n')
 lines.append('const COUNTRY_TOTALS = {')
 for c in CTRY_KEYS:
     lines.append(f'  {c}: {json.dumps(country_totals[c])},')
-lines.append('};\n')
-
-lines.append('const COUNTRY_REV_MED = {')
-for c in CTRY_KEYS:
-    lines.append(f'  {c}: {{')
-    for m in MEDIUMS:
-        lines.append(f'    {m}: {json.dumps(country_rev_med[c][m])},')
-    lines.append('  },')
 lines.append('};\n')
 
 with open(OUTPUT_JS, 'w') as f:

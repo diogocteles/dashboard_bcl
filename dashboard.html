@@ -785,14 +785,13 @@ const REV_MED={
 
 // ─── TRAFFIC BY MEDIUM (estimated sessions from REV_MED proportions × total sessions) ─
 const _wfS=[48901,42773,35492,40085,23766,23764,28529,35513,42895,37566,41354,38605,42071,25431,21333,29508,39600,49825,29758,45445,52534,50586,54996,38920,34355,37502,56612,56418,42149,14232];
-function buildTrafMed(revMedData){
+const TRAF_MED=(()=>{
   const meds=['paid','email','sms','flow','none'];
   const result={};
-  const totals=WK.map((_,i)=>meds.reduce((s,m)=>s+(revMedData[m]?.[i]||0),0));
-  meds.forEach(m=>{result[m]=WK.map((_,i)=>totals[i]>0?Math.round((revMedData[m][i]||0)/totals[i]*_wfS[i]):0);});
+  const totals=WK.map((_,i)=>meds.reduce((s,m)=>s+(REV_MED[m]?.[i]||0),0));
+  meds.forEach(m=>{result[m]=WK.map((_,i)=>totals[i]>0?Math.round((REV_MED[m][i]||0)/totals[i]*_wfS[i]):0);});
   return result;
-}
-const TRAF_MED=buildTrafMed(REV_MED);
+})();
 
 // ─── COHORT CHANNEL FILTER ────────────────────────────────────────────────────
 // Approximate proportion of new-customer acquisition by channel
@@ -1119,14 +1118,6 @@ function updateAllCharts(country){
   const etc=Chart.getChart('emailTrendChart');
   if(etc){let cl=md.filter(d=>d.m<'2023-01').reduce((s,d)=>s+d.nc,0);const u=rec.map(d=>{const v=Math.round(d.nc*0.12+cl*0.008);cl+=d.nc;return v;});etc.data.labels=rec.map(d=>d.m.slice(2,7));etc.data.datasets[0].data=rec.map(d=>d.nc);etc.data.datasets[1].data=u;etc.update();}
 
-  // Revenue by Medium & Traffic by Medium (country-specific from COUNTRY_REV_MED)
-  const revMedData=COUNTRY_REV_MED[country]||COUNTRY_REV_MED.ALL;
-  const rmc=Chart.getChart('wowRevMedChart');
-  if(rmc){rmc.data.datasets.forEach(ds=>{if(revMedData[ds.key])ds.data=[...revMedData[ds.key]];});rmc.update();}
-  const trafData=buildTrafMed(revMedData);
-  const trc=Chart.getChart('wowTrafChart');
-  if(trc){trc.data.datasets.forEach(ds=>{if(trafData[ds.key])ds.data=[...trafData[ds.key]];});trc.update();}
-
   buildTimeCohort();
 }
 
@@ -1160,8 +1151,8 @@ function filterChartByKey(chartId,dataMap,key,tabsId,btn){
   chart.update();
 }
 function filterMedChart(k,btn){filterChartByKey('wowMedChart',CVR_MED,k,'med-tabs',btn);}
-function filterRevMedChart(k,btn){filterChartByKey('wowRevMedChart',COUNTRY_REV_MED[activeCountry]||COUNTRY_REV_MED.ALL,k,'rev-med-tabs',btn);}
-function filterTrafChart(k,btn){filterChartByKey('wowTrafChart',buildTrafMed(COUNTRY_REV_MED[activeCountry]||COUNTRY_REV_MED.ALL),k,'traf-tabs',btn);}
+function filterRevMedChart(k,btn){filterChartByKey('wowRevMedChart',REV_MED,k,'rev-med-tabs',btn);}
+function filterTrafChart(k,btn){filterChartByKey('wowTrafChart',TRAF_MED,k,'traf-tabs',btn);}
 
 // ─── CAMPAIGNS TABLE ──────────────────────────────────────────────────────────
 function switchCampView(type,btn){
@@ -1319,10 +1310,10 @@ function initCharts(){
   buildWoWChart('wowMedChart',CVR_MED,'%','wow-med-legend');
 
   // 14. WoW Revenue by Medium
-  buildWoWChart('wowRevMedChart',COUNTRY_REV_MED.ALL,'$','wow-rev-legend');
+  buildWoWChart('wowRevMedChart',REV_MED,'$','wow-rev-legend');
 
   // 14b. Weekly Traffic by Medium
-  buildWoWChart('wowTrafChart',buildTrafMed(COUNTRY_REV_MED.ALL),'n','wow-traf-legend');
+  buildWoWChart('wowTrafChart',TRAF_MED,'n','wow-traf-legend');
 
   // 18. CVR Trend + sessions
   (()=>{
