@@ -5,11 +5,13 @@ Reads 45 Shopify order export CSVs (real Shipping Country per order)
 -> Computes per-country monthly analytics, cohorts, retention
 -> Writes data.js
 """
-import csv, os, json, sys
+import csv, os, json, sys, re, urllib.parse
 from collections import defaultdict
 from datetime import datetime, date, timedelta
 
 ORDERS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Orders')
+ATC_CSV    = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+             'Sessions by landing page path - 2025-11-20 - 2026-02-20.csv')
 OUTPUT_JS  = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data.js')
 CTRY_KEYS  = ['ALL', 'US', 'GB', 'DE', 'NL', 'CA']
 START_MONTH = '2020-03'
@@ -398,7 +400,59 @@ for g in sku_groups_ordered:
     m1_r = round(sku_cohort_ord[g][1]/m0_o*100,1) if m0_o else 0
     print(f"    {g:<25s}  M+0={m0_o:6,}  M+1 retention={m1_r}%")
 
-# Step 12: Write data.js
+# Step 12: Product ATC (add-to-cart) from landing page sessions CSV
+print("\nBuilding product ATC data...")
+
+def map_slug_to_group(slug):
+    s = slug.lower()
+    if 'detox-7' in s or 'detox-week' in s or 'detox_week' in s: return 'Detox 7-Day'
+    if 'detox-14' in s: return 'Detox 14-Day'
+    if 'detox-21' in s or '21-days-detox' in s or 'mini-rehab' in s: return 'Detox 21-Day'
+    if 'detox-28' in s: return 'Detox 28-Day'
+    if '21-day-body-reset' in s or 'body-reset' in s: return '21-Day Body Reset'
+    if 'calorie-bombs' in s or 'i-feel' in s: return 'Calorie Blocker'
+    if 'drinking-protocol' in s: return 'Drinking Protocol'
+    if 'dreaming' in s or 'sleep' in s: return 'Better Sleep'
+    if 'liver-health' in s or 'fatty-liver' in s or 'fatty_liver' in s: return 'Liver Health'
+    if 'liver-reset' in s: return 'Liver Reset'
+    if 'liver' in s and 'health' not in s and 'reset' not in s and 'fatty' not in s: return 'Liver Bundle'
+    if 'brain' in s or 'energy' in s or 'anxiety' in s: return 'Brain & Energy'
+    if 'bloated' in s or 'digestive' in s or 'digestion' in s: return 'Digestion'
+    if 'immunity' in s or 'immune' in s or 'achoo' in s or 'cactus-throat' in s or 'winter-fix' in s: return 'Immune Support'
+    if 'knackered' in s or 'tiredness' in s: return 'Tiredness'
+    return None
+
+atc_grp_week = defaultdict(lambda: defaultdict(lambda: [0, 0]))  # [sessions, cart_adds]
+
+if os.path.exists(ATC_CSV):
+    with open(ATC_CSV, newline='', encoding='utf-8-sig') as f:
+        for row in csv.DictReader(f):
+            path = urllib.parse.unquote(row['Landing page path']).lower()
+            m = re.search(r'/products/([^/?#\s]+)', path)
+            if not m: continue
+            slug = m.group(1)
+            grp = map_slug_to_group(slug)
+            if not grp: continue
+            week = row['Week'].strip('"')
+            try:
+                s = int(row['Sessions'])
+                c = int(row['Sessions with cart additions'])
+            except (ValueError, KeyError):
+                continue
+            atc_grp_week[grp][week][0] += s
+            atc_grp_week[grp][week][1] += c
+    print(f"  Loaded ATC data: {len(atc_grp_week)} product groups")
+else:
+    print(f"  WARNING: ATC CSV not found at {ATC_CSV}")
+
+atc_weeks = sorted(set(w for g in atc_grp_week.values() for w in g))
+# Only include groups with enough total sessions to be meaningful
+atc_groups_ordered = sorted(
+    [g for g in atc_grp_week if sum(v[0] for v in atc_grp_week[g].values()) >= 200],
+    key=lambda g: -sum(v[0] for v in atc_grp_week[g].values())
+)
+
+# Step 13: Write data.js
 def fmt_monthly(arr):
     parts = []
     for d in arr:
@@ -456,6 +510,15 @@ lines.append('};\n')
 lines.append('const SKU_COHORT_ORD = {')
 for g in sku_groups_ordered:
     lines.append(f"  {json.dumps(g)}: {json.dumps(sku_cohort_ord[g])},")
+lines.append('};\n')
+
+lines.append(f'const PRODUCT_ATC_WEEKS = {json.dumps(atc_weeks)};\n')
+lines.append('const PRODUCT_ATC = {')
+for g in atc_groups_ordered:
+    s_arr = [atc_grp_week[g].get(w, [0,0])[0] for w in atc_weeks]
+    c_arr = [atc_grp_week[g].get(w, [0,0])[1] for w in atc_weeks]
+    pct_arr = [round(c_arr[i]/s_arr[i]*100, 1) if s_arr[i] else None for i in range(len(atc_weeks))]
+    lines.append(f"  {json.dumps(g)}: {{s:{json.dumps(s_arr)},c:{json.dumps(c_arr)},pct:{json.dumps(pct_arr)}}},")
 lines.append('};\n')
 
 with open(OUTPUT_JS, 'w') as f:

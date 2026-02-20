@@ -616,6 +616,11 @@ tr:hover td{background:var(--border)}
     <div class="card-h"><div><div class="card-title">Weekly CVR Trend + Session Volume</div><div class="card-sub">Last 30 weeks · Jul 2025 – Feb 2026</div><span class="global-chip">🌍 Global · not filtered by country</span></div><span class="tag-sm r">↓ −35% from peak to Feb 2026</span></div>
     <div style="height:210px;position:relative"><canvas id="cvrTrendChart"></canvas></div>
   </div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-h"><div><div class="card-title">Add-to-Cart Rate by Product</div><div class="card-sub">Sessions → cart additions per product page · Nov 2025 – Feb 2026 · 14 weeks</div><span class="global-chip">🌍 Global · not filtered by country</span></div></div>
+    <div id="atc-product-tog" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
+    <div style="height:260px;position:relative"><canvas id="atcProductChart"></canvas></div>
+  </div>
 </section>
 
 <!-- ══ RETENTION ══ -->
@@ -1575,6 +1580,61 @@ function initCharts(){
       {label:'New Contacts',data:rec.map(d=>d.nc),backgroundColor:'rgba(0,229,160,0.7)',borderRadius:2,borderSkipped:false},
       {label:'Est. Unsubscribes',data:unsubs,backgroundColor:'rgba(255,77,109,0.6)',borderRadius:2,borderSkipped:false},
     ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tooltipBase,callbacks:{label(c){return` ${c.dataset.label}: ${fmtN(c.parsed.y)}`;}}},scales:{x:{grid:{display:false},ticks:{maxRotation:0,maxTicksLimit:14}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:v=>fmtN(v)}}}}}});
+  })();
+
+  // 22. Add-to-Cart rate by product (weekly)
+  (()=>{
+    const ATC_COLORS=['#00e5a0','#3b9eff','#ffb347','#a78bfa','#ff4d6d','#06b6d4','#84cc16','#f97316','#e879f9','#fb7185'];
+    const prods=Object.keys(PRODUCT_ATC);
+    const labels=PRODUCT_ATC_WEEKS.map(w=>w.slice(5));
+    const datasets=prods.map((p,i)=>({
+      label:p,
+      data:PRODUCT_ATC[p].pct,
+      borderColor:ATC_COLORS[i%ATC_COLORS.length],
+      backgroundColor:'transparent',
+      borderWidth:i<2?2.5:1.5,
+      pointRadius:2.5,
+      pointHoverRadius:5,
+      tension:0.3,
+      spanGaps:true,
+    }));
+    const ctx=document.getElementById('atcProductChart').getContext('2d');
+    const atcChart=new Chart(ctx,{type:'line',data:{labels,datasets},options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{...tooltipBase,callbacks:{
+          title(items){return'Week of '+PRODUCT_ATC_WEEKS[items[0].dataIndex];},
+          label(c){
+            const p=c.dataset.label;const i=c.dataIndex;const d=PRODUCT_ATC[p];
+            if(d.pct[i]===null)return null;
+            return` ${p}: ${d.pct[i]}% ATC (${fmtN(d.c[i])} of ${fmtN(d.s[i])} sessions)`;
+          },
+          filter(item){return item.parsed.y!==null;}
+        }}
+      },
+      scales:{
+        x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#6b8199',font:{size:10},maxRotation:0}},
+        y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#6b8199',font:{size:10},callback:v=>v+'%'},
+          title:{display:true,text:'Add-to-Cart %',color:'#6b8199',font:{size:10}}}
+      }
+    }});
+    // Build product toggle pills
+    const tog=document.getElementById('atc-product-tog');
+    prods.forEach((p,i)=>{
+      const col=ATC_COLORS[i%ATC_COLORS.length];
+      const btn=document.createElement('button');
+      btn.style.cssText=`border:1.5px solid ${col};color:${col};background:${col}22;border-radius:20px;padding:3px 11px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s;opacity:1`;
+      btn.textContent=p;
+      btn.onclick=()=>{
+        const vis=atcChart.isDatasetVisible(i);
+        atcChart.setDatasetVisibility(i,!vis);
+        btn.style.opacity=vis?'0.3':'1';
+        atcChart.update();
+      };
+      tog.appendChild(btn);
+    });
   })();
 
 }
