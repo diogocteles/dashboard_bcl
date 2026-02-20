@@ -539,7 +539,14 @@ tr:hover td{background:var(--border)}
     <span class="ins a">Recent months (2025-10+) show incomplete future data</span>
   </div>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px">
-    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text)">Metric &amp; View</div>
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text)">View</div>
+    <div class="mtog" id="cohort-view-tog">
+      <button class="mtog-btn active" onclick="switchCohortView('time',this)">By Month</button>
+      <button class="mtog-btn" onclick="switchCohortView('product',this)">By First Product</button>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px">
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text)">Metric &amp; Mode</div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <div class="mtog" id="cohort-metric-tog">
         <button class="mtog-btn active" onclick="switchCohortMetric('revenue',this)">Revenue ($)</button>
@@ -551,7 +558,7 @@ tr:hover td{background:var(--border)}
       </div>
     </div>
   </div>
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+  <div id="cohort-channel-row" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
     <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)">Channel Filter<span id="cohort-chan-note" style="display:none;text-transform:none;letter-spacing:0;margin-left:6px;opacity:0.5"> · absolute only</span></div>
     <div class="mtog" id="cohort-channel-tog">
       <button class="mtog-btn active" onclick="switchCohortChannel('all',this)">All</button>
@@ -561,9 +568,13 @@ tr:hover td{background:var(--border)}
       <button class="mtog-btn" onclick="switchCohortChannel('flow',this)">Flow</button>
     </div>
   </div>
-  <div class="card">
+  <div class="card" id="time-cohort-card">
     <div class="card-h"><div><div class="card-title" id="cohort-card-title">Revenue Retention Cohort</div><div class="card-sub" id="cohort-card-sub">Gross sales · Jan 2023 – Dec 2025 · M+0 = month of first subscription order, M+1 = 1 month later, etc.</div></div></div>
     <div class="cohort-wrap"><table class="cohort" id="cohortTime"></table></div>
+  </div>
+  <div class="card" id="sku-cohort-card" style="display:none">
+    <div class="card-h"><div><div class="card-title" id="sku-cohort-card-title">Revenue by First Product</div><div class="card-sub" id="sku-cohort-card-sub">Gross sales grouped by first subscription product · M+0 = first order, M+1 = 2nd subscription order, etc.</div></div></div>
+    <div class="cohort-wrap"><table class="cohort" id="skuCohortTable"></table></div>
   </div>
 </section>
 
@@ -1033,7 +1044,7 @@ const COHORT_TIME_ORD = {
 };
 const COHORT_MONTHS=['2023-01','2023-02','2023-03','2023-04','2023-05','2023-06','2023-07','2023-08','2023-09','2023-10','2023-11','2023-12','2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08','2024-09','2024-10','2024-11','2024-12','2025-01','2025-02','2025-03','2025-04','2025-05','2025-06','2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'];
 
-let cohortMetric='revenue', cohortMode='abs';
+let cohortMetric='revenue', cohortMode='abs', cohortView='time';
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 function heatColor(val,rowMax,type='revenue'){
@@ -1089,11 +1100,63 @@ function buildTimeCohort(){
   if(subEl) subEl.textContent=(cohortMode==='pct'?'% of M+0 (retention rate)':cohortMetric==='revenue'?'Gross sales':'Order count')+' · Jan 2023 – Dec 2024 · M+0 = first order, M+1 = 2nd subscription order, etc.';
 }
 
+function buildSkuCohort(){
+  const data=cohortMetric==='revenue'?SKU_COHORT_REV:SKU_COHORT_ORD;
+  const groups=Object.keys(data);
+  let h='<thead><tr><th>Product</th>';
+  for(let i=0;i<=12;i++)h+=`<th>M+${i}</th>`;
+  h+='</tr></thead><tbody>';
+  groups.forEach(grp=>{
+    const rawVals=data[grp]||new Array(13).fill(0);
+    const m0=rawVals[0]||1;
+    const rowMax=Math.max(...rawVals.filter(v=>v>0));
+    h+=`<tr><td>${grp}</td>`;
+    for(let i=0;i<=12;i++){
+      const v=rawVals[i]||0;
+      if(v===0&&i>0){h+=`<td style="color:rgba(255,255,255,0.18)">—</td>`;continue;}
+      let displayVal,sty='';
+      if(cohortMode==='pct'){
+        const pct=i===0?100:(m0>0?(v/m0*100):0);
+        displayVal=pct>0?(i===0?'100%':pct.toFixed(1)+'%'):'—';
+        if(pct>0){const intensity=Math.min(pct/100,1);const a=0.08+intensity*0.72;sty=`background:rgba(0,229,160,${a.toFixed(2)});color:${intensity>0.45?'rgba(255,255,255,0.95)':'rgba(255,255,255,0.6)'}`;}
+      } else {
+        displayVal=v===0?'—':(cohortMetric==='revenue'?fmtK(v):fmtN(v));
+        sty=rowMax>0&&v>0?heatColor(v,rowMax,cohortMetric):'';
+      }
+      h+=`<td style="${sty}">${displayVal}</td>`;
+    }
+    h+='</tr>';
+  });
+  h+='</tbody>';
+  document.getElementById('skuCohortTable').innerHTML=h;
+  const titleEl=document.getElementById('sku-cohort-card-title');
+  const subEl=document.getElementById('sku-cohort-card-sub');
+  if(titleEl)titleEl.textContent=(cohortMetric==='revenue'?'Revenue':'Orders')+' by First Product';
+  if(subEl)subEl.textContent=(cohortMode==='pct'?'% of M+0 (retention rate)':cohortMetric==='revenue'?'Gross sales':'Order count')+' · grouped by first subscription product · M+0 = first order, M+1 = 2nd subscription, etc.';
+}
+
+function buildActiveCohort(){
+  if(cohortView==='product')buildSkuCohort();
+  else buildTimeCohort();
+}
+
+function switchCohortView(view,btn){
+  cohortView=view;
+  document.querySelectorAll('#cohort-view-tog .mtog-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('time-cohort-card').style.display=view==='time'?'':'none';
+  document.getElementById('sku-cohort-card').style.display=view==='product'?'':'none';
+  // Channel filter only applies to time cohort view
+  const chanRow=document.getElementById('cohort-channel-row');
+  if(chanRow)chanRow.style.display=view==='time'?'':'none';
+  buildActiveCohort();
+}
+
 function switchCohortMetric(metric,btn){
   cohortMetric=metric;
   document.querySelectorAll('#cohort-metric-tog .mtog-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  buildTimeCohort();
+  buildActiveCohort();
 }
 
 function switchCohortMode(mode,btn){
@@ -1112,7 +1175,7 @@ function switchCohortMode(mode,btn){
     chanTog.style.pointerEvents='';
     if(chanNote)chanNote.style.display='none';
   }
-  buildTimeCohort();
+  buildActiveCohort();
 }
 
 function switchCohortChannel(ch,btn){
@@ -1387,6 +1450,7 @@ window.addEventListener('load',()=>{
   buildCountryCards();
   renderCampTable();
   buildTimeCohort();
+  buildSkuCohort();
   initCharts();
   initScrollSpy();
 });

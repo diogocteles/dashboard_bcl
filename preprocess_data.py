@@ -40,11 +40,32 @@ def fnum(s):
 ALL_MONTHS    = gen_months(START_MONTH, END_MONTH)
 COHORT_MONTHS = gen_months('2023-01', '2025-12')
 
+def map_product_group(lname):
+    """Map a Lineitem name to a canonical product group."""
+    n = lname.lower()
+    if 'detox' in n and '7' in n:   return 'Detox 7-Day'
+    if 'detox' in n and '14' in n:  return 'Detox 14-Day'
+    if 'detox' in n and '21' in n:  return 'Detox 21-Day'
+    if 'detox' in n and '28' in n:  return 'Detox 28-Day'
+    if 'body reset' in n or ('21 day' in n and 'detox' not in n): return '21-Day Body Reset'
+    if 'calorie' in n:              return 'Calorie Blocker'
+    if 'drinking' in n:             return 'Drinking Protocol'
+    if 'sleep' in n:                return 'Better Sleep'
+    if 'liver health' in n:         return 'Liver Health'
+    if 'liver reset' in n:          return 'Liver Reset'
+    if 'liver' in n:                return 'Liver Bundle'
+    if 'brain' in n or 'energy' in n: return 'Brain & Energy'
+    if 'digestion' in n or 'digestive' in n: return 'Digestion'
+    if 'immune' in n:               return 'Immune Support'
+    if 'tiredness' in n or 'tired' in n: return 'Tiredness'
+    return 'Other'
+
 # Step 1: Read all order exports, deduplicate by Name
 print("Reading order files...")
 files = sorted(f for f in os.listdir(ORDERS_DIR) if f.endswith('.csv'))
 print(f"Found {len(files)} files")
 orders = {}
+order_product = {}  # order name → product group (from first non-empty lineitem)
 total_rows = 0
 for fn in files:
     path = os.path.join(ORDERS_DIR, fn)
@@ -53,7 +74,14 @@ for fn in files:
         for row in reader:
             total_rows += 1
             name = (row.get('Name') or '').strip()
-            if not name or name in orders:
+            if not name:
+                continue
+            # Capture first non-empty lineitem product per order (before dedup)
+            if name not in order_product:
+                lname = (row.get('Lineitem name') or '').strip()
+                if lname:
+                    order_product[name] = map_product_group(lname)
+            if name in orders:
                 continue
             # Skip bulk-imported historical orders (_E suffix = external system migration,
             # all stamped 2023-02-01 with wrong dates — causes false Feb 2023 spike)
@@ -336,6 +364,40 @@ for entry in all_weeks:
         entry[c]['s'] = d['sess']
         entry[c]['cvr'] = round(d['comp'] / d['sess'] * 100, 2) if d['sess'] > 0 else 0
 
+# Step 11: SKU cohort — group customers by first-subscription product, track M+0..M+12
+print("\nBuilding SKU cohort...")
+email_first_product = {}  # email → product group of their first subscription order
+for o in valid:  # valid is sorted by created
+    em = o.get('email', '')
+    if not em or not o['is_sub'] or o['sub_seq'] != 1:
+        continue
+    if em not in email_first_product:
+        grp = order_product.get(o['name'], 'Other')
+        email_first_product[em] = grp
+
+sku_cohort_rev = defaultdict(lambda: [0.] * 13)
+sku_cohort_ord = defaultdict(lambda: [0]  * 13)
+for o in valid:
+    em = o.get('email', '')
+    if not em or not o['is_sub'] or o['sub_seq'] < 1 or o['sub_seq'] > 13:
+        continue
+    grp = email_first_product.get(em)
+    if not grp:
+        continue
+    offset = o['sub_seq'] - 1  # M+0 = 1st order, M+1 = 2nd, ...
+    g = o['subtotal'] + o['discount']
+    sku_cohort_rev[grp][offset] += g
+    sku_cohort_ord[grp][offset] += 1
+
+# Sort groups by M+0 order count descending
+sku_groups_ordered = sorted(sku_cohort_rev.keys(),
+                            key=lambda g: sku_cohort_ord[g][0], reverse=True)
+print(f"  Product groups: {len(sku_groups_ordered)}")
+for g in sku_groups_ordered:
+    m0_o = sku_cohort_ord[g][0]
+    m1_r = round(sku_cohort_ord[g][1]/m0_o*100,1) if m0_o else 0
+    print(f"    {g:<25s}  M+0={m0_o:6,}  M+1 retention={m1_r}%")
+
 # Step 12: Write data.js
 def fmt_monthly(arr):
     parts = []
@@ -385,6 +447,16 @@ lines.append('const WEEKLY_CHAN = [')
 for entry in all_weeks:
     lines.append(f"  {json.dumps(entry)},")
 lines.append('];\n')
+
+lines.append('const SKU_COHORT_REV = {')
+for g in sku_groups_ordered:
+    lines.append(f"  {json.dumps(g)}: {json.dumps([round(v) for v in sku_cohort_rev[g]])},")
+lines.append('};\n')
+
+lines.append('const SKU_COHORT_ORD = {')
+for g in sku_groups_ordered:
+    lines.append(f"  {json.dumps(g)}: {json.dumps(sku_cohort_ord[g])},")
+lines.append('};\n')
 
 with open(OUTPUT_JS, 'w') as f:
     f.write('\n'.join(lines))
